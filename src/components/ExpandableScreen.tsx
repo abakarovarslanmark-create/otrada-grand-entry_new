@@ -1,12 +1,6 @@
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 
 // Context
@@ -20,15 +14,12 @@ interface ExpandableScreenContextValue {
   animationDuration: number;
 }
 
-const ExpandableScreenContext =
-  createContext<ExpandableScreenContextValue | null>(null);
+const ExpandableScreenContext = createContext<ExpandableScreenContextValue | null>(null);
 
 function useExpandableScreen() {
   const context = useContext(ExpandableScreenContext);
   if (!context) {
-    throw new Error(
-      "useExpandableScreen must be used within an ExpandableScreen",
-    );
+    throw new Error("useExpandableScreen must be used within an ExpandableScreen");
   }
   return context;
 }
@@ -104,36 +95,14 @@ export function ExpandableScreenTrigger({
   children,
   className = "",
 }: ExpandableScreenTriggerProps) {
-  const { isExpanded, expand, layoutId, triggerRadius } = useExpandableScreen();
+  const { expand } = useExpandableScreen();
 
   return (
-    <AnimatePresence initial={false}>
-      {!isExpanded && (
-        <motion.div className={`relative inline-block ${className}`}>
-          {/* Background layer with shared layoutId for morphing */}
-          <motion.div
-            style={{
-              borderRadius: triggerRadius,
-            }}
-            layout
-            layoutId={layoutId}
-            className="absolute inset-0 transform-gpu will-change-transform"
-          />
-          {/* Content layer that fades out on expand */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            layout={false}
-            onClick={expand}
-            className="relative cursor-pointer"
-          >
-            {children}
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div className={`relative inline-block ${className}`}>
+      <div onClick={expand} className="relative cursor-pointer">
+        {children}
+      </div>
+    </div>
   );
 }
 
@@ -188,15 +157,19 @@ export function ExpandableScreenContent({
         className="absolute inset-0 bg-ink/45"
         aria-hidden="true"
       />
-      {/* Morphing background with shared layoutId */}
+      {/* Modal Dialog */}
       <motion.div
-        layoutId={layoutId}
-        transition={{ duration: animationDuration }}
+        initial={{ opacity: 0, scale: 0.95, y: 16 }}
+        animate={{
+          opacity: isExpanded ? 1 : 0,
+          scale: isExpanded ? 1 : 0.95,
+          y: isExpanded ? 0 : 16,
+        }}
+        transition={{ duration: animationDuration, ease: [0.16, 1, 0.3, 1] }}
         style={{
           borderRadius: contentRadius,
         }}
-        layout
-        className={`relative flex transform-gpu overflow-y-auto will-change-transform ${className}`}
+        className={`relative flex transform-gpu overflow-y-auto will-change-transform shadow-2xl ${className}`}
       >
         <motion.div
           initial={{ opacity: 0 }}

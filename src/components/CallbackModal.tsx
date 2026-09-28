@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
   ExpandableScreen,
   ExpandableScreenContent,
@@ -7,43 +7,48 @@ import {
 } from "./ExpandableScreen";
 
 const inputClass =
-  "w-full rounded-xl border border-border bg-white px-4 py-3 text-base text-ink placeholder:text-muted-foreground transition-colors focus:border-ink/40 focus:outline-none";
+  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-ink placeholder:text-muted-foreground transition-colors focus:border-[#023352] focus:outline-none";
 
 export function CallbackButton({
   layoutId,
   className = "cta-solid",
+  children,
+  triggerRadius = "12px",
 }: {
   layoutId: string;
   className?: string;
+  children?: ReactNode;
+  triggerRadius?: string;
 }) {
   const [sent, setSent] = useState(false);
 
   return (
     <ExpandableScreen
       layoutId={layoutId}
+      triggerRadius={triggerRadius}
       contentRadius="24px"
       onExpandChange={(expanded) => {
         if (!expanded) setSent(false);
       }}
     >
-      <ExpandableScreenTrigger>
+      <ExpandableScreenTrigger className={className.includes("w-full") ? "w-full" : undefined}>
         <button className={className} type="button">
-          Заказать звонок
+          {children || "Заказать звонок"}
         </button>
       </ExpandableScreenTrigger>
       <ExpandableScreenContent
-        className="h-auto! max-h-[92dvh] w-[min(92vw,30rem)]! bg-card p-6 text-card-foreground sm:p-8"
-        closeButtonClassName="text-ink hover:bg-ink/10"
+        className="flex h-auto! max-h-[90dvh] w-[min(94vw,48rem)]! flex-col justify-center overflow-y-auto bg-white p-6 text-card-foreground shadow-2xl sm:p-10 md:p-12"
+        closeButtonClassName="text-[#001826] hover:bg-slate-100"
       >
         {sent ? (
-          <div className="flex flex-col items-center py-8 text-center">
+          <div className="mx-auto flex max-w-md flex-col items-center py-12 text-center">
             <span className="grid size-16 place-items-center rounded-full bg-brand/10 text-brand">
               <Check aria-hidden="true" size={32} strokeWidth={2} />
             </span>
-            <h2 className="mt-5 font-display text-2xl leading-tight">
+            <h2 className="mt-5 font-display text-2xl sm:text-3xl leading-tight text-[#001826]">
               Заявка отправлена
             </h2>
-            <p className="mt-2 text-base leading-[1.5] text-card-foreground/70">
+            <p className="mt-2 text-base leading-[1.5] text-slate-600">
               Мы перезвоним вам в ближайшее время.
             </p>
           </div>
@@ -58,7 +63,6 @@ export function CallbackButton({
 function CallbackForm({ onSent }: { onSent: () => void }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [comment, setComment] = useState("");
   const [error, setError] = useState<string | null>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -77,22 +81,25 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
       return;
     }
     setError(null);
-    // Бэкенда у сайта-визитки нет: подтверждение показывается локально.
     onSent();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col" noValidate>
-      <h2 className="font-display text-[clamp(1.5rem,4vw,2rem)] leading-tight">
+    <form
+      onSubmit={handleSubmit}
+      className="mx-auto flex w-full max-w-lg flex-col justify-center py-6"
+      noValidate
+    >
+      <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] leading-tight text-center text-[#001826]">
         Заказать звонок
       </h2>
-      <p className="mt-2 text-base leading-[1.5] text-card-foreground/70">
+      <p className="mt-3 text-center text-base leading-[1.5] text-slate-600">
         Оставьте контакты — мы перезвоним вам и ответим на вопросы о квартирах.
       </p>
 
-      <div className="mt-6 flex flex-col gap-4">
-        <label className="flex flex-col gap-1.5 text-sm text-card-foreground/80">
-          Имя
+      <div className="mt-8 flex flex-col gap-5">
+        <label className="flex flex-col gap-2 text-sm font-medium text-[#001826]">
+          Указать ваше имя
           <input
             ref={nameRef}
             className={inputClass}
@@ -105,8 +112,8 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
             onChange={(event) => setName(event.target.value)}
           />
         </label>
-        <label className="flex flex-col gap-1.5 text-sm text-card-foreground/80">
-          Телефон
+        <label className="flex flex-col gap-2 text-sm font-medium text-[#001826]">
+          Указать номер телефона
           <input
             className={inputClass}
             type="tel"
@@ -118,29 +125,18 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
             onChange={(event) => setPhone(event.target.value)}
           />
         </label>
-        <label className="flex flex-col gap-1.5 text-sm text-card-foreground/80">
-          Комментарий
-          <textarea
-            className={`${inputClass} min-h-24 resize-none`}
-            name="comment"
-            maxLength={500}
-            placeholder="Например: интересует 2-комнатная квартира"
-            value={comment}
-            onChange={(event) => setComment(event.target.value)}
-          />
-        </label>
       </div>
 
       {error ? (
-        <p className="mt-3 text-sm text-destructive" role="alert">
+        <p className="mt-3 text-sm text-destructive text-center" role="alert">
           {error}
         </p>
       ) : null}
 
-      <button className="cta-solid mt-6 w-full" type="submit">
-        Заказать звонок
+      <button className="cta-solid mt-8 w-full py-4 text-base font-medium" type="submit">
+        Отправить
       </button>
-      <p className="mt-3 text-center text-xs leading-[1.5] text-card-foreground/60">
+      <p className="mt-4 text-center text-xs leading-[1.5] text-slate-500">
         Нажимая кнопку, вы соглашаетесь на обработку персональных данных
       </p>
     </form>

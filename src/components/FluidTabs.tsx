@@ -89,7 +89,9 @@ export default function FluidTabs({
             <motion.span
               className={cn("relative z-10 whitespace-nowrap", selected && "text-ink")}
               animate={{ scale: selected ? 1 : 0.98 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
+              transition={
+                reduceMotion ? { duration: 0 } : { duration: 0.28, ease: [0.32, 0.72, 0, 1] }
+              }
             >
               {label}
             </motion.span>

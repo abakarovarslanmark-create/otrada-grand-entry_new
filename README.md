@@ -1,6 +1,7 @@
 # Otrada Hero Showcase
 
 Make a hero block for the website of the business card of the construction company "Otrada" on next.js since seo optimization is important to me, the result should be like in the photo, use the photo of the house in the hero block that I will send you.
+
 # Climeworks design system
 
 - **Source:** https://climeworks.com
@@ -13,7 +14,7 @@ Make a hero block for the website of the business card of the construction compa
 
 ## Tone
 
-The hero image dominates, establishing a sense of scale and the environment. The typography is clean and spacious, prioritizing clarity and a sense of scientific precision. The overall feel is understated and authoritative.  ·  climate tech hero, carbon capture website, environmental design, clean energy branding, scientific website, minimalist tech, dark hero image
+The hero image dominates, establishing a sense of scale and the environment. The typography is clean and spacious, prioritizing clarity and a sense of scientific precision. The overall feel is understated and authoritative. · climate tech hero, carbon capture website, environmental design, clean energy branding, scientific website, minimalist tech, dark hero image
 
 ## Colors
 
@@ -31,7 +32,7 @@ The hero image dominates, establishing a sense of scale and the environment. The
 
 | `#b4b5b8` | support |
 
-Color words: *cool*, *muted*, *monochrome*
+Color words: _cool_, _muted_, _monochrome_
 
 ## Typography
 
@@ -70,10 +71,8 @@ Max content width: **1440px**
 ## CSS variables exposed by the source
 
 ```css
-
 :root {
-
-  --btn-color-disabled: #A7ACAE;
+  --btn-color-disabled: #a7acae;
 
   --btn-color-hover: black;
 
@@ -83,7 +82,7 @@ Max content width: **1440px**
 
   --w-grid-gap: 2.5rem;
 
-  --btn-arrow-color: #008FE8;
+  --btn-arrow-color: #008fe8;
 
   --btn-color-pressed: black;
 
@@ -95,10 +94,8 @@ Max content width: **1440px**
 
   --btn-color: black;
 
-  --w-container-gap: calc((100vw - 1280px + 6rem)/2);
-
+  --w-container-gap: calc((100vw - 1280px + 6rem) / 2);
 }
-
 ```
 
 ## Components present
@@ -111,13 +108,13 @@ Max content width: **1440px**
 
 ## Notes for the agent
 
-- **Adapt, don't copy.** The type ramp is a *starting point*. Scale it to your project's base size; preserve the *ratio*, not the literal pixels.
+- **Adapt, don't copy.** The type ramp is a _starting point_. Scale it to your project's base size; preserve the _ratio_, not the literal pixels.
 
 - **Color roles are heuristic** (luminance + dominance). Verify against the source URL before committing tokens.
 
 - **Spacing** assumes a constant base step; round detected values to your project's scale (4 / 8 / 16) when implementing.
 
-- **CSS variables** dumped above (when present) are the source's *actual* tokens - those are higher signal than guesses.
+- **CSS variables** dumped above (when present) are the source's _actual_ tokens - those are higher signal than guesses.
 
 - This page's macrostructure is **Marquee Hero**.
 

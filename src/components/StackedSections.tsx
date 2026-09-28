@@ -64,6 +64,21 @@ export default function StackedSections({
     [total],
   );
 
+  const [currentStackOffset, setCurrentStackOffset] = React.useState(stackOffset);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== "undefined" && window.innerWidth < 1024) {
+        setCurrentStackOffset(Math.min(stackOffset, 16));
+      } else {
+        setCurrentStackOffset(stackOffset);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [stackOffset]);
+
   // Scale on `.card__content` only. Each pane freezes once the next card has pinned.
   React.useEffect(() => {
     if (!withDramaEffect || total === 0) {
@@ -87,7 +102,8 @@ export default function StackedSections({
         return false;
       }
       return (
-        nextCard.getBoundingClientRect().top - containerTop <= (cardIndex + 1) * stackOffset + 1
+        nextCard.getBoundingClientRect().top - containerTop <=
+        (cardIndex + 1) * currentStackOffset + 1
       );
     };
 
@@ -119,7 +135,7 @@ export default function StackedSections({
           continue;
         }
 
-        const pinnedTop = (i + 1) * stackOffset;
+        const pinnedTop = (i + 1) * currentStackOffset;
         const offset = nextCard.getBoundingClientRect().top - containerTop - pinnedTop;
         const rowH = card.offsetHeight > 0 ? card.offsetHeight : 1;
         const distance = Math.max(rowH - pinnedTop, 1);
@@ -140,20 +156,22 @@ export default function StackedSections({
     target.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
 
+    const contents = contentRefs.current;
+
     return () => {
       target.removeEventListener("scroll", onScroll, { passive: true } as EventListenerOptions);
       window.removeEventListener("resize", onScroll);
       if (frame) {
         cancelAnimationFrame(frame);
       }
-      for (const content of contentRefs.current) {
+      for (const content of contents) {
         if (content) {
           delete content.dataset["stackedCovered"];
           content.style.transform = "";
         }
       }
     };
-  }, [total, stackOffset, withDramaEffect, scaleAtDepth]);
+  }, [total, currentStackOffset, withDramaEffect, scaleAtDepth]);
 
   if (total === 0) {
     return null;
@@ -169,8 +187,8 @@ export default function StackedSections({
       style={
         {
           "--numcards": total,
-          "--stacked-top-offset": `${stackOffset}px`,
-          paddingBottom: `calc(${total} * ${stackOffset}px)`,
+          "--stacked-top-offset": `${currentStackOffset}px`,
+          paddingBottom: `calc(${total} * ${currentStackOffset}px)`,
         } as React.CSSProperties
       }
     >

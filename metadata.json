@@ -1,0 +1,6 @@
+{
+  "name": "Otrada Grand Entry",
+  "description": "Showcase website for construction company Otrada featuring architectural facades, layouts, and benefits.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
