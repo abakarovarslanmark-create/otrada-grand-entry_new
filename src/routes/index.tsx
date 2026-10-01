@@ -1,10 +1,18 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check, ChevronLeft, ChevronRight, Menu } from "lucide-react";
-import facadeAsset from "../assets/otrada-facade.webp.asset.json";
-import projectAsset from "../assets/otrada-project.png.asset.json";
-import benefitAsset from "../assets/monolithic frame.webp";
-import logoAsset from "../assets/otrada-logo.png.asset.json";
+import facadeAsset from "../assets/the facade of the house_hero block.webp";
+import projectAsset from "../assets/visualization of the house_about.webp";
+import logoDark from "../assets/logo_dark.svg";
+import logoWhite from "../assets/logo_white.svg";
+import floorLayoutAsset from "../assets/floor layout.webp";
+import threeRooms7560Asset from "../assets/3 rooms 75,60.webp";
+import threeRooms8057Asset from "../assets/3 rooms 80,57.webp";
+import monolithicFrameAsset from "../assets/monolithic frame.webp";
+import heatingAsset from "../assets/The cat on the battery.webp";
+import parkingAsset from "../assets/parking space.webp";
+import environmentAsset from "../assets/Environment and infrastructure.webp";
+import quietAsset from "../assets/Mira Street.jpg";
 import { CallbackButton } from "../components/CallbackModal";
 import FluidTabs from "../components/FluidTabs";
 import StackedSections from "../components/StackedSections";
@@ -112,7 +120,7 @@ function Header() {
       }`}
     >
       <header className="header-shell mx-auto flex w-full max-w-[1300px] items-center p-[12px] backdrop-blur-[25px]">
-        <img className="h-6 w-auto lg:h-7" src={logoAsset.url} alt="Отрада — на главную" />
+        <img className="h-6 w-auto lg:h-7" src={logoDark} alt="Отрада — на главную" />
 
         <div className="ml-auto flex items-center gap-4 lg:gap-5">
           <nav className="hidden items-center gap-5 lg:flex" aria-label="Основная навигация">
@@ -154,7 +162,7 @@ function Index() {
       <section className="relative isolate min-h-[100svh] overflow-hidden">
         <img
           className="absolute inset-0 -z-10 size-full object-cover object-[center_72%]"
-          src={facadeAsset.url}
+          src={facadeAsset}
           alt="Фасад жилого дома «Отрада» в Ульяновске"
         />
 
@@ -238,7 +246,7 @@ function AboutSection() {
               className={`reveal-up h-[680px] w-full rounded-[24px] object-cover shadow-sm ${
                 imgInView ? "reveal-up-in" : ""
               }`}
-              src={projectAsset.url}
+              src={projectAsset}
               alt="Девятиэтажный жилой дом «Отрада» на улице Мира в Ульяновске"
             />
           </div>
@@ -276,22 +284,27 @@ function AboutSection() {
 const benefitsData = [
   {
     title: "Монолитный каркас",
+    image: monolithicFrameAsset,
     text: "Монолитный железобетонный каркас обеспечивает зданию исключительную прочность и точную геометрию. Конструкция дает минимальную и плавную усадку, благодаря чему дизайнерский ремонт, дорогая штукатурка и широкоформатная плитка сохраняют идеальный вид без трещин и деформаций годами. Отсутствие внутренних несущих перегородок оставляет полную свободу в зонировании: пространство легко адаптировать под индивидуальный проект — от масштабной кухни-гостиной до приватной мастер-спальни с гардеробной.",
   },
   {
     title: "Поквартирное отопление",
+    image: heatingAsset,
     text: "Индивидуальный котел в квартире дает полную независимость от городского графика. Когда на улице сырая осень или холодный май, комфортный микроклимат настраивается за пару секунд, без ожидания начала отопительного сезона. Система работает строго по фактической потребности: тепло не расходуется впустую во время отъезда, а счета в квитанциях формируются по реальному счетчику, выходя ощутимо ниже общегородских тарифов.",
   },
   {
     title: "Парковка",
+    image: parkingAsset,
     text: "Собственный закрытый паркинг на первом этаже дома снимает вопрос вечернего поиска места: автомобиль всегда ждет на закрепленной точке, в сухом и защищенном пространстве. Зимой не приходится тратить время на прогрев мотора и очистку стекол от наледи, а с пакетами и вещами можно сразу подняться на лифте к квартире. Для второго автомобиля или гостей предусмотрена открытая благоустроенная стоянка на придомовой территории.",
   },
   {
     title: "Окружение и инфраструктура",
+    image: environmentAsset,
     text: "Исторический центр обеспечивает городскую автономность: всё необходимое для жизни находится в радиусе короткой пешей прогулки. В пяти-семи минутах от дома сосредоточены ведущие гимназии и статусные школы города. Дорога на занятия занимает минимум времени и проходит по спокойным центральным улицам — без утренних пробок, ожидания транспорта и сложных маршрутов.\n\nБуквально за углом начинается главная городская жизнь. На соседних улицах сформировался насыщенный кластер для отдыха: пешеходные зоны с брусчаткой, атмосферные кофейни, авторские рестораны, зеленые скверы, театры и набережная.",
   },
   {
     title: "Тишина",
+    image: quietAsset,
     text: "Улица Мира расположена в самом центре, но устроена так, что сквозного движения здесь нет. Основные транспортные потоки уходят на соседние широкие артерии, поэтому под окнами не скапливаются заторы, нет маршрутного транспорта и шума тяжелой техники. Даже в разгар дня здесь сохраняется спокойный, размеренный ритм, а ночью не слышно перекрестков и монотонного гула проспектов — можно спокойно спать с открытыми окнами.",
   },
 ];
@@ -320,7 +333,7 @@ function BenefitsSection() {
               >
                 <img
                   className="h-[220px] w-full shrink-0 rounded-xl object-cover sm:h-[300px] lg:h-[400px] lg:w-[600px]"
-                  src={benefitAsset.url}
+                  src={item.image}
                   alt={`${item.title} — жилой дом «Отрада»`}
                   loading="lazy"
                 />
@@ -352,7 +365,7 @@ interface LayoutCardItem {
 const layoutsData: Record<number, LayoutCardItem> = {
   0: {
     title: "Этаж",
-    imageSrc: "/floor-plan.png",
+    imageSrc: floorLayoutAsset,
     imageAlt: "Схема планировки этажа жилого дома «Отрада»",
   },
 };
@@ -361,14 +374,14 @@ const threeRoomApartments = [
   {
     id: "3room-1",
     title: "3-комнатная квартира",
-    imageSrc: "/floor-plan-3k-1.png",
+    imageSrc: threeRooms7560Asset,
     totalArea: "75,60",
     heatedArea: "74,48",
   },
   {
     id: "3room-2",
     title: "3-комнатная квартира",
-    imageSrc: "/floor-plan-3k-2.png",
+    imageSrc: threeRooms8057Asset,
     totalArea: "80,57",
     heatedArea: "78,13",
   },
@@ -917,7 +930,7 @@ function FooterSection() {
       <div className="mt-20 w-full overflow-hidden leading-none select-none sm:mt-28 lg:mt-36">
         <div className="mx-auto w-full max-w-layouts px-5 sm:px-8 lg:px-12">
           <img
-            src={logoAsset.url}
+            src={logoWhite}
             alt="Отрада"
             className="w-full translate-y-[2px] scale-x-[1.48] scale-y-[1.26] origin-bottom object-contain pointer-events-none select-none"
           />
