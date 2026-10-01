@@ -12,7 +12,6 @@ import monolithicFrameAsset from "../assets/monolithic frame.webp";
 import heatingAsset from "../assets/The cat on the battery.webp";
 import parkingAsset from "../assets/parking space.webp";
 import environmentAsset from "../assets/Environment and infrastructure.webp";
-import quietAsset from "../assets/Mira Street.jpg";
 import { CallbackButton } from "../components/CallbackModal";
 import FluidTabs from "../components/FluidTabs";
 import StackedSections from "../components/StackedSections";
@@ -21,7 +20,7 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Отрада — квартиры в центре Ульяновска" },
+      { title: "Отрада — квартиры в центре Ульяновска | Официальный сайт" },
       {
         name: "description",
         content:
@@ -33,19 +32,41 @@ export const Route = createFileRoute("/")({
         content: "Новая квартира в современном жилом доме в самом центре Ульяновска.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: "https://otrada-dom.ru/" },
+      { property: "og:image", content: "/the facade of the house_hero block.webp" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Отрада — квартиры в центре Ульяновска" },
+      {
+        name: "twitter:description",
+        content: "Клубный жилой дом «Отрада» в центре Ульяновска на улице Мира.",
+      },
+      { name: "twitter:image", content: "/the facade of the house_hero block.webp" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [
+      { rel: "canonical", href: "https://otrada-dom.ru/" },
+      {
+        rel: "preload",
+        as: "image",
+        href: facadeImage,
+        type: "image/webp",
+      },
+    ],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Organization",
-          name: "Отрада",
-          description: "Строительная компания и жилой дом в центре Ульяновска",
-          areaServed: "Ульяновск",
+          "@type": "ApartmentComplex",
+          name: "Жилой дом «Отрада»",
+          description: "Клубный девятиэтажный дом в историческом центре Ульяновска на улице Мира.",
+          url: "https://otrada-dom.ru/",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "ул. Мира",
+            addressLocality: "Ульяновск",
+            addressRegion: "Ульяновская область",
+            addressCountry: "RU",
+          },
         }),
       },
     ],
@@ -141,10 +162,10 @@ function Header() {
             </a>
           </nav>
 
-          <CallbackButton layoutId="callback-header" />
+          <CallbackButton layoutId="callback-header" triggerRadius="4px" />
         </div>
         <button
-          className="ml-2 grid size-10 place-items-center text-ink lg:hidden"
+          className="ml-2 grid size-10 place-items-center rounded-[4px] text-ink transition-colors hover:bg-black/5 lg:hidden"
           type="button"
           aria-label="Открыть меню"
         >
@@ -164,6 +185,9 @@ function Index() {
           className="absolute inset-0 -z-10 size-full object-cover object-[center_72%]"
           src={facadeAsset}
           alt="Фасад жилого дома «Отрада» в Ульяновске"
+          fetchPriority="high"
+          width={1920}
+          height={1080}
         />
 
         <div className="mx-auto flex min-h-[100svh] w-full max-w-layouts flex-col px-5 pb-10 pt-5 sm:px-8 sm:pb-14 sm:pt-8 lg:px-12">
@@ -181,11 +205,11 @@ function Index() {
               >
                 Жизнь - это Отрада
               </h1>
-              <p className="hero-enter hero-delay-2 hero-text-shadow mt-6 max-w-2xl text-lg leading-relaxed text-foreground/90 sm:text-[1.75rem] sm:leading-relaxed">
+              <p className="hero-enter hero-delay-2 hero-text-shadow mt-6 max-w-none whitespace-nowrap text-[clamp(1rem,2.8vw,1.75rem)] leading-relaxed text-foreground/90">
                 Ваша новая квартира в самом центре Ульяновска
               </p>
               <div className="hero-enter hero-delay-4 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <a className="cta-outline group" href="#layouts">
+                <a className="cta-outline group rounded-[4px]" href="#layouts">
                   Посмотреть планировки
                   <ArrowRight
                     className="transition-transform group-hover:translate-x-1"
@@ -193,7 +217,11 @@ function Index() {
                     size={19}
                   />
                 </a>
-                <CallbackButton layoutId="callback-hero" className="cta-solid cta-large" />
+                <CallbackButton
+                  layoutId="callback-hero"
+                  className="cta-solid cta-large rounded-[4px]"
+                  triggerRadius="4px"
+                />
               </div>
             </div>
           </section>
@@ -239,15 +267,18 @@ function AboutSection() {
         </h2>
 
         <div className="mt-10 flex flex-col items-center gap-10 lg:flex-row lg:items-start lg:gap-[100px]">
-          {/* Фотография 550x680 скругление 24px */}
+          {/* Фотография 550x680 скругление 12px */}
           <div className="w-full max-w-[550px] shrink-0">
             <img
               ref={imgRef}
-              className={`reveal-up h-[680px] w-full rounded-[24px] object-cover shadow-sm ${
+              className={`reveal-up h-[680px] w-full rounded-[12px] object-cover shadow-sm ${
                 imgInView ? "reveal-up-in" : ""
               }`}
               src={projectAsset}
               alt="Девятиэтажный жилой дом «Отрада» на улице Мира в Ульяновске"
+              loading="lazy"
+              width={550}
+              height={680}
             />
           </div>
 
@@ -336,6 +367,8 @@ function BenefitsSection() {
                   src={item.image}
                   alt={`${item.title} — жилой дом «Отрада»`}
                   loading="lazy"
+                  width={600}
+                  height={400}
                 />
                 <div className="flex flex-1 flex-col">
                   <h3 className="font-sans text-[1.5rem] font-medium leading-tight text-[#001826] sm:text-[1.75rem] lg:text-[2rem]">
@@ -458,6 +491,9 @@ function ApartmentCardsGrid({
                 src={item.imageSrc}
                 alt={`Планировка: ${item.title} ${item.totalArea} м²`}
                 className="max-h-full max-w-full object-contain"
+                loading="lazy"
+                width={500}
+                height={360}
               />
             ) : (
               <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center text-slate-400">
@@ -484,8 +520,8 @@ function ApartmentCardsGrid({
 
             <CallbackButton
               layoutId={`callback-${tabKey}-${index}`}
-              triggerRadius="14px"
-              className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[14px] border border-[#023352] text-base font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
+              triggerRadius="4px"
+              className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-base font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
             >
               Узнать подробнее
             </CallbackButton>
@@ -542,6 +578,9 @@ function LayoutsSection() {
                     src={currentLayout.imageSrc}
                     alt={currentLayout.imageAlt}
                     className="max-h-[480px] w-full object-contain"
+                    loading="lazy"
+                    width={760}
+                    height={480}
                   />
                 ) : (
                   <div className="flex min-h-[300px] w-full flex-col items-center justify-center p-6 text-center text-slate-400 sm:min-h-[420px]">
@@ -553,8 +592,8 @@ function LayoutsSection() {
 
               <CallbackButton
                 layoutId={`callback-layouts-${activeTab}`}
-                triggerRadius="14px"
-                className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[14px] border border-[#023352] text-base font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
+                triggerRadius="4px"
+                className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-base font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
               >
                 Выбрать квартиру
               </CallbackButton>
@@ -653,7 +692,7 @@ function ConstructionSection() {
           onClick={() => handleScroll("left")}
           disabled={!canScrollLeft}
           aria-label="Предыдущий слайд"
-          className="flex h-[40px] w-[60px] cursor-pointer items-center justify-center rounded-[8px] border border-[#023352] text-[#023352] transition-colors duration-200 hover:bg-[#023352]/5 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-300 disabled:hover:bg-transparent"
+          className="flex h-[40px] w-[60px] cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-[#023352] transition-colors duration-200 hover:bg-[#023352]/5 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-300 disabled:hover:bg-transparent"
         >
           <ChevronLeft size={20} />
         </button>
@@ -662,7 +701,7 @@ function ConstructionSection() {
           onClick={() => handleScroll("right")}
           disabled={!canScrollRight}
           aria-label="Следующий слайд"
-          className="flex h-[40px] w-[60px] cursor-pointer items-center justify-center rounded-[8px] border border-[#023352] text-[#023352] transition-colors duration-200 hover:bg-[#023352]/5 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-300 disabled:hover:bg-transparent"
+          className="flex h-[40px] w-[60px] cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-[#023352] transition-colors duration-200 hover:bg-[#023352]/5 disabled:cursor-not-allowed disabled:border-slate-300 disabled:text-slate-300 disabled:hover:bg-transparent"
         >
           <ChevronRight size={20} />
         </button>
@@ -863,7 +902,10 @@ function QuestionsSection() {
                 </p>
               ) : null}
 
-              <button className="cta-solid mt-8 w-full py-4 text-base font-medium" type="submit">
+              <button
+                className="cta-solid mt-8 w-full rounded-[4px] py-4 text-base font-medium"
+                type="submit"
+              >
                 Отправить
               </button>
               <p className="mt-4 text-center text-xs leading-[1.5] text-slate-500">
