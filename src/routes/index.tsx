@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Check, ChevronLeft, ChevronRight, Menu } from "lucide-react";
 import facadeAsset from "../assets/otrada-facade.webp.asset.json";
 import projectAsset from "../assets/otrada-project.png.asset.json";
-import benefitAsset from "../assets/otrada-benefit.png.asset.json";
+import benefitAsset from "../assets/monolithic frame.webp";
 import logoAsset from "../assets/otrada-logo.png.asset.json";
 import { CallbackButton } from "../components/CallbackModal";
 import FluidTabs from "../components/FluidTabs";
