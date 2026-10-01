@@ -72,17 +72,102 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const schemaOrgData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ApartmentComplex",
+      "@id": "https://otrada-dom.ru/#building",
+      name: "Жилой дом «Отрада»",
+      description:
+        "Клубный девятиэтажный жилой дом в историческом центре Ульяновска на улице Мира. Поквартирное отопление, закрытый паркинг, продуманные планировки.",
+      url: "https://otrada-dom.ru/",
+      image: "https://otrada-dom.ru/otrada-facade.webp",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "ул. Мира",
+        addressLocality: "Ульяновск",
+        addressRegion: "Ульяновская область",
+        postalCode: "432000",
+        addressCountry: "RU",
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: 54.314192,
+        longitude: 48.403132,
+      },
+      amenityFeature: [
+        {
+          "@type": "LocationFeatureSpecification",
+          name: "Поквартирное индивидуальное отопление",
+          value: true,
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          name: "Собственный закрытый паркинг",
+          value: true,
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          name: "Охраняемая благоустроенная территория",
+          value: true,
+        },
+      ],
+    },
+    {
+      "@type": "RealEstateAgent",
+      "@id": "https://otrada-dom.ru/#organization",
+      name: "ООО СЗ «Отрада»",
+      url: "https://otrada-dom.ru/",
+      logo: "https://otrada-dom.ru/otrada-logo.png",
+      telephone: "+7 (8422) 24-94-44",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "ул. Мира",
+        addressLocality: "Ульяновск",
+        addressRegion: "Ульяновская область",
+        addressCountry: "RU",
+      },
+    },
+  ],
+};
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Отрада" },
-      { name: "description", content: "Жилой дом «Отрада» в Ульяновске" },
-      { name: "author", content: "Отрада" },
-      { property: "og:site_name", content: "Отрада" },
+      { title: "Отрада — квартиры в центре Ульяновска | Официальный сайт" },
+      {
+        name: "description",
+        content:
+          "Клубный жилой дом «Отрада» в историческом центре Ульяновска на улице Мира. Поквартирное отопление, закрытый паркинг, продуманные планировки 1-3 комнатных квартир.",
+      },
+      { name: "author", content: "ООО СЗ ОТРАДА" },
+      { property: "og:site_name", content: "Жилой дом «Отрада»" },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "ru_RU" },
+      {
+        property: "og:title",
+        content: "Отрада — квартиры в центре Ульяновска | Официальный сайт",
+      },
+      {
+        property: "og:description",
+        content:
+          "Клубный жилой дом «Отрада» в историческом центре Ульяновска: индивидуальное отопление, закрытый паркинг, комфортные планировки.",
+      },
+      { property: "og:image", content: "/the facade of the house_hero block.webp" },
       { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "Отрада — клубный дом в центре Ульяновска",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Клубный жилой дом «Отрада» в тихой части исторического центра Ульяновска на улице Мира.",
+      },
+      { name: "twitter:image", content: "/the facade of the house_hero block.webp" },
     ],
     links: [
       {
@@ -90,6 +175,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "canonical", href: "https://otrada-dom.ru/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -106,9 +192,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrgData) }}
+        />
       </head>
       <body>
         {children}

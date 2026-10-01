@@ -13,7 +13,7 @@ export function CallbackButton({
   layoutId,
   className = "cta-solid",
   children,
-  triggerRadius = "12px",
+  triggerRadius = "4px",
 }: {
   layoutId: string;
   className?: string;
@@ -133,7 +133,10 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
         </p>
       ) : null}
 
-      <button className="cta-solid mt-8 w-full py-4 text-base font-medium" type="submit">
+      <button
+        className="cta-solid mt-8 w-full rounded-[4px] py-4 text-base font-medium"
+        type="submit"
+      >
         Отправить
       </button>
       <p className="mt-4 text-center text-xs leading-[1.5] text-slate-500">
