@@ -42,7 +42,7 @@ export function ExpandableScreen({
   onExpandChange,
   layoutId = "expandable-card",
   triggerRadius = "100px",
-  contentRadius = "24px",
+  contentRadius = "12px",
   animationDuration = 0.3,
   lockScroll = true,
 }: ExpandableScreenProps) {
@@ -147,7 +147,7 @@ export function ExpandableScreenContent({
   if (!mounted || typeof document === "undefined") return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-[20px]">
       {/* Dimmed backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -169,13 +169,13 @@ export function ExpandableScreenContent({
         style={{
           borderRadius: contentRadius,
         }}
-        className={`relative flex transform-gpu overflow-y-auto will-change-transform shadow-2xl ${className}`}
+        className={`relative flex h-full w-full transform-gpu overflow-y-auto will-change-transform shadow-2xl ${className}`}
       >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isExpanded ? 1 : 0 }}
           transition={{ delay: isExpanded ? 0.15 : 0, duration: 0.4 }}
-          className="relative z-20 w-full"
+          className="relative z-20 flex min-h-full w-full flex-col items-center justify-center"
         >
           {children}
         </motion.div>
@@ -185,7 +185,7 @@ export function ExpandableScreenContent({
             onClick={collapse}
             animate={{ opacity: isExpanded ? 1 : 0 }}
             transition={{ delay: isExpanded ? 0.15 : 0, duration: 0.2 }}
-            className={`absolute top-4 right-4 z-30 flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
+            className={`absolute top-6 right-6 z-30 flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
               closeButtonClassName ||
               "text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
             }`}

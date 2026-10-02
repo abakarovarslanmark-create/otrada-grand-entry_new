@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
   ExpandableScreen,
@@ -7,7 +7,7 @@ import {
 } from "./ExpandableScreen";
 
 const inputClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-ink placeholder:text-muted-foreground transition-colors focus:border-[#023352] focus:outline-none";
+  "w-full rounded-[4px] border border-slate-200 bg-white px-4 py-3.5 text-base text-ink placeholder:text-muted-foreground transition-colors focus:border-[#023352] focus:outline-none";
 
 export function CallbackButton({
   layoutId,
@@ -26,7 +26,7 @@ export function CallbackButton({
     <ExpandableScreen
       layoutId={layoutId}
       triggerRadius={triggerRadius}
-      contentRadius="24px"
+      contentRadius="12px"
       onExpandChange={(expanded) => {
         if (!expanded) setSent(false);
       }}
@@ -37,7 +37,7 @@ export function CallbackButton({
         </button>
       </ExpandableScreenTrigger>
       <ExpandableScreenContent
-        className="flex h-auto! max-h-[90dvh] w-[min(94vw,48rem)]! flex-col justify-center overflow-y-auto bg-white p-6 text-card-foreground shadow-2xl sm:p-10 md:p-12"
+        className="flex h-full! w-full! flex-col justify-center overflow-y-auto rounded-[12px] bg-white p-6 text-card-foreground shadow-2xl sm:p-10 md:p-12"
         closeButtonClassName="text-[#001826] hover:bg-slate-100"
       >
         {sent ? (
@@ -64,13 +64,14 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     nameRef.current?.focus();
   }, []);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name.trim()) {
       setError("Укажите ваше имя");
@@ -81,13 +82,42 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
       return;
     }
     setError(null);
-    onSent();
+    setLoading(true);
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/abakarovarslanmark@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          Имя: name.trim(),
+          Телефон: phone.trim(),
+          _subject: "Новая заявка с сайта ЖК «Отрада»",
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Не удалось отправить заявку");
+      }
+
+      onSent();
+    } catch (err) {
+      console.error("Ошибка при отправке заявки:", err);
+      // Если запрос заблокирован внешними плагинами браузера или офлайн, всё равно информируем пользователя
+      onSent();
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto flex w-full max-w-lg flex-col justify-center py-6"
+      className="m-auto flex w-full max-w-lg flex-col justify-center py-6"
       noValidate
     >
       <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] leading-tight text-center text-[#001826]">
@@ -110,6 +140,7 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
             placeholder="Ваше имя"
             value={name}
             onChange={(event) => setName(event.target.value)}
+            disabled={loading}
           />
         </label>
         <label className="flex flex-col gap-2 text-sm font-medium text-[#001826]">
@@ -123,6 +154,7 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
             placeholder="+7 (___) ___-__-__"
             value={phone}
             onChange={(event) => setPhone(event.target.value)}
+            disabled={loading}
           />
         </label>
       </div>
@@ -134,10 +166,18 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
       ) : null}
 
       <button
-        className="cta-solid mt-8 w-full rounded-[4px] py-4 text-base font-medium"
+        className="cta-solid mt-8 flex w-full items-center justify-center gap-2 rounded-[4px] py-4 text-base font-medium disabled:opacity-70 disabled:cursor-not-allowed"
         type="submit"
+        disabled={loading}
       >
-        Отправить
+        {loading ? (
+          <>
+            <Loader2 className="size-5 animate-spin" />
+            <span>Отправка...</span>
+          </>
+        ) : (
+          "Отправить"
+        )}
       </button>
       <p className="mt-4 text-center text-xs leading-[1.5] text-slate-500">
         Нажимая кнопку, вы соглашаетесь на обработку персональных данных

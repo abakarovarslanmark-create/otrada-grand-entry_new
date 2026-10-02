@@ -8,10 +8,22 @@ import logoWhite from "../assets/logo_white.svg";
 import floorLayoutAsset from "../assets/floor layout.webp";
 import threeRooms7560Asset from "../assets/3 rooms 75,60.webp";
 import threeRooms8057Asset from "../assets/3 rooms 80,57.webp";
+import twoRooms5858Asset from "../assets/2 rooms 58,58.webp";
+import twoRooms6138Asset from "../assets/2 rooms 61,38.webp";
+import oneRoomAsset from "../assets/1 rooms.webp";
 import monolithicFrameAsset from "../assets/monolithic frame.webp";
 import heatingAsset from "../assets/The cat on the battery.webp";
 import parkingAsset from "../assets/parking space.webp";
 import environmentAsset from "../assets/Environment and infrastructure.webp";
+import streetAsset from "../assets/street.webp";
+import constr2026_09 from "../assets/2026_09.webp";
+import constr2026_07 from "../assets/2026_07.webp";
+import constr2026_05 from "../assets/2026_05.webp";
+import constr2026_03 from "../assets/2026_03.webp";
+import constr2026_01 from "../assets/2026_01.webp";
+import constr2025_11 from "../assets/2025_11.webp";
+import constr2025_09 from "../assets/2025_09.webp";
+import constr2025_07 from "../assets/2025_07.webp";
 import { CallbackButton } from "../components/CallbackModal";
 import FluidTabs from "../components/FluidTabs";
 import StackedSections from "../components/StackedSections";
@@ -47,7 +59,7 @@ export const Route = createFileRoute("/")({
       {
         rel: "preload",
         as: "image",
-        href: facadeImage,
+        href: facadeAsset,
         type: "image/webp",
       },
     ],
@@ -140,8 +152,20 @@ function Header() {
         visible ? "translate-y-0 opacity-100" : "-translate-y-[150%] opacity-0 pointer-events-none"
       }`}
     >
-      <header className="header-shell mx-auto flex w-full max-w-[1300px] items-center p-[12px] backdrop-blur-[25px]">
-        <img className="h-6 w-auto lg:h-7" src={logoDark} alt="Отрада — на главную" />
+      <header className="header-shell mx-auto flex w-full max-w-[1300px] items-center rounded-[12px] p-[12px] backdrop-blur-[25px]">
+        <a
+          href="/"
+          className="inline-flex shrink-0 items-center transition-opacity hover:opacity-80"
+          aria-label="На главную"
+        >
+          <img
+            src={logoDark}
+            alt="Отрада — на главную"
+            className="w-[100px] object-contain"
+            width={100}
+            height={28}
+          />
+        </a>
 
         <div className="ml-auto flex items-center gap-4 lg:gap-5">
           <nav className="hidden items-center gap-5 lg:flex" aria-label="Основная навигация">
@@ -329,14 +353,14 @@ const benefitsData = [
     text: "Собственный закрытый паркинг на первом этаже дома снимает вопрос вечернего поиска места: автомобиль всегда ждет на закрепленной точке, в сухом и защищенном пространстве. Зимой не приходится тратить время на прогрев мотора и очистку стекол от наледи, а с пакетами и вещами можно сразу подняться на лифте к квартире. Для второго автомобиля или гостей предусмотрена открытая благоустроенная стоянка на придомовой территории.",
   },
   {
+    title: "Тишина",
+    image: streetAsset,
+    text: "Улица Мира расположена в самом центре, но устроена так, что сквозного движения здесь нет. Основные транспортные потоки уходят на соседние широкие артерии, поэтому под окнами не скапливаются заторы, нет маршрутного транспорта и шума тяжелой техники. Даже в разгар дня здесь сохраняется спокойный, размеренный ритм, а ночью не слышно перекрестков и монотонного гула проспектов — можно спокойно спать с открытыми окнами.",
+  },
+  {
     title: "Окружение и инфраструктура",
     image: environmentAsset,
     text: "Исторический центр обеспечивает городскую автономность: всё необходимое для жизни находится в радиусе короткой пешей прогулки. В пяти-семи минутах от дома сосредоточены ведущие гимназии и статусные школы города. Дорога на занятия занимает минимум времени и проходит по спокойным центральным улицам — без утренних пробок, ожидания транспорта и сложных маршрутов.\n\nБуквально за углом начинается главная городская жизнь. На соседних улицах сформировался насыщенный кластер для отдыха: пешеходные зоны с брусчаткой, атмосферные кофейни, авторские рестораны, зеленые скверы, театры и набережная.",
-  },
-  {
-    title: "Тишина",
-    image: quietAsset,
-    text: "Улица Мира расположена в самом центре, но устроена так, что сквозного движения здесь нет. Основные транспортные потоки уходят на соседние широкие артерии, поэтому под окнами не скапливаются заторы, нет маршрутного транспорта и шума тяжелой техники. Даже в разгар дня здесь сохраняется спокойный, размеренный ритм, а ночью не слышно перекрестков и монотонного гула проспектов — можно спокойно спать с открытыми окнами.",
   },
 ];
 
@@ -360,10 +384,10 @@ function BenefitsSection() {
             {benefitsData.map((item, index) => (
               <article
                 key={index}
-                className="flex w-full max-w-[1400px] flex-col gap-[30px] rounded-2xl bg-card p-[20px] text-card-foreground shadow-[0_-4px_20px_rgba(0,0,0,0.1)] lg:flex-row lg:items-start"
+                className="flex w-full max-w-[1400px] flex-col gap-[30px] rounded-[12px] bg-card p-[20px] text-card-foreground shadow-[0_-4px_20px_rgba(0,0,0,0.1)] lg:flex-row lg:items-start"
               >
                 <img
-                  className="h-[220px] w-full shrink-0 rounded-xl object-cover sm:h-[300px] lg:h-[400px] lg:w-[600px]"
+                  className="h-[220px] w-full shrink-0 rounded-[4px] object-cover sm:h-[300px] lg:h-[400px] lg:w-[600px]"
                   src={item.image}
                   alt={`${item.title} — жилой дом «Отрада»`}
                   loading="lazy"
@@ -424,14 +448,14 @@ const twoRoomApartments = [
   {
     id: "2room-1",
     title: "2-комнатная квартира",
-    imageSrc: "/floor-plan-2k-1.png",
+    imageSrc: twoRooms5858Asset,
     totalArea: "58,58",
     heatedArea: "57,09",
   },
   {
     id: "2room-2",
     title: "2-комнатная квартира",
-    imageSrc: "/floor-plan-2k-2.png",
+    imageSrc: twoRooms6138Asset,
     totalArea: "61,38",
     heatedArea: "60,02",
   },
@@ -441,7 +465,7 @@ const oneRoomApartments = [
   {
     id: "1room-1",
     title: "1-комнатная квартира",
-    imageSrc: "/floor-plan-1k-1.png",
+    imageSrc: oneRoomAsset,
     totalArea: "40,41",
     heatedArea: "39,00",
   },
@@ -462,41 +486,31 @@ function ApartmentCardsGrid({
   apartments: ApartmentItem[];
   tabKey: string;
 }) {
-  const isSingle = apartments.length === 1;
-
   return (
-    <div
-      className={
-        isSingle
-          ? "flex w-full justify-center"
-          : "grid w-full max-w-[1300px] grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:gap-8"
-      }
-    >
+    <div className="flex w-full flex-wrap items-stretch justify-center gap-6 lg:gap-8">
       {apartments.map((item, index) => (
         <article
           key={item.id}
-          className={`flex w-full flex-col justify-between gap-[40px] rounded-[24px] bg-white p-[20px] shadow-lg ${
-            isSingle ? "max-w-[620px]" : ""
-          }`}
+          className="flex w-full max-w-[440px] flex-col justify-between gap-[40px] rounded-[12px] bg-white p-[20px] shadow-lg sm:w-fit"
         >
           {/* Элемент 1: заголовок h3 */}
           <h3 className="text-center font-sans text-2xl font-normal leading-tight text-[#001826] sm:text-[1.75rem]">
             {item.title}
           </h3>
 
-          {/* Элемент 2: фотография (высота 360) */}
-          <div className="flex h-[360px] w-full items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-[#f8fafc] p-2">
+          {/* Элемент 2: фотография (высота 300) */}
+          <div className="flex h-[300px] w-full items-center justify-center overflow-hidden">
             {item.imageSrc ? (
               <img
                 src={item.imageSrc}
                 alt={`Планировка: ${item.title} ${item.totalArea} м²`}
-                className="max-h-full max-w-full object-contain"
+                className="h-[300px] w-auto max-w-full object-contain"
                 loading="lazy"
                 width={500}
-                height={360}
+                height={300}
               />
             ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center text-slate-400">
+              <div className="flex h-full w-full min-w-[280px] flex-col items-center justify-center p-6 text-center text-slate-400">
                 <img
                   src=""
                   alt={`Планировка: ${item.title} ${item.totalArea} м²`}
@@ -567,23 +581,23 @@ function LayoutsSection() {
           ) : activeTab === 3 ? (
             <ApartmentCardsGrid apartments={oneRoomApartments} tabKey="1room" />
           ) : (
-            <article className="flex w-full max-w-[760px] flex-col gap-10 rounded-[24px] bg-white p-5 shadow-lg">
+            <article className="flex w-full max-w-[760px] flex-col gap-10 rounded-[12px] bg-white p-[20px] shadow-lg sm:w-fit">
               <h3 className="text-center font-sans text-2xl font-medium leading-tight text-[#001826] sm:text-[1.75rem]">
                 {currentLayout.title}
               </h3>
 
-              <div className="flex min-h-[300px] w-full items-center justify-center overflow-hidden rounded-xl border border-[#e2e8f0] bg-[#fafafa] p-2 sm:min-h-[420px]">
+              <div className="flex h-[300px] w-full items-center justify-center overflow-hidden">
                 {currentLayout.imageSrc ? (
                   <img
                     src={currentLayout.imageSrc}
                     alt={currentLayout.imageAlt}
-                    className="max-h-[480px] w-full object-contain"
+                    className="h-[300px] w-auto max-w-full object-contain"
                     loading="lazy"
                     width={760}
-                    height={480}
+                    height={300}
                   />
                 ) : (
-                  <div className="flex min-h-[300px] w-full flex-col items-center justify-center p-6 text-center text-slate-400 sm:min-h-[420px]">
+                  <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center text-slate-400">
                     <img src="" alt={currentLayout.imageAlt} className="hidden" />
                     <span className="text-sm font-medium">Планировка этажа</span>
                   </div>
@@ -606,11 +620,14 @@ function LayoutsSection() {
 }
 
 const constructionItems = [
-  { id: "sep-26", title: "Сентябрь 2026", imageSrc: "/construction-sep-2026.png" },
-  { id: "aug-26", title: "Август 2026", imageSrc: "/construction-aug-2026.png" },
-  { id: "jul-26", title: "Июль 2026", imageSrc: "/construction-jul-2026.png" },
-  { id: "jun-26", title: "Июнь 2026", imageSrc: "/construction-jun-2026.png" },
-  { id: "may-26", title: "Май 2026", imageSrc: "/construction-may-2026.png" },
+  { id: "sep-26", title: "Сентябрь 2026", imageSrc: constr2026_09 },
+  { id: "jul-26", title: "Июль 2026", imageSrc: constr2026_07 },
+  { id: "may-26", title: "Май 2026", imageSrc: constr2026_05 },
+  { id: "mar-26", title: "Март 2026", imageSrc: constr2026_03 },
+  { id: "jan-26", title: "Январь 2026", imageSrc: constr2026_01 },
+  { id: "nov-25", title: "Ноябрь 2025", imageSrc: constr2025_11 },
+  { id: "sep-25", title: "Сентябрь 2025", imageSrc: constr2025_09 },
+  { id: "jul-25", title: "Июль 2025", imageSrc: constr2025_07 },
 ];
 
 function ConstructionSection() {
@@ -664,12 +681,12 @@ function ConstructionSection() {
       >
         {constructionItems.map((item) => (
           <article key={item.id} className="w-[400px] shrink-0">
-            <div className="h-[400px] w-[400px] overflow-hidden rounded-[20px] border border-slate-100 bg-[#f8fafc] shadow-sm">
+            <div className="h-[400px] w-[400px] overflow-hidden rounded-[12px] border border-slate-100 bg-[#f8fafc] shadow-sm">
               {item.imageSrc ? (
                 <img
                   src={item.imageSrc}
                   alt={`Ход строительства — ${item.title}`}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full rounded-[12px] object-cover"
                   loading="lazy"
                 />
               ) : (
@@ -968,15 +985,16 @@ function FooterSection() {
         </div>
       </div>
 
-      {/* Нижний логотип, проваленный на 1-2 пикселя вниз */}
-      <div className="mt-20 w-full overflow-hidden leading-none select-none sm:mt-28 lg:mt-36">
-        <div className="mx-auto w-full max-w-layouts px-5 sm:px-8 lg:px-12">
-          <img
-            src={logoWhite}
-            alt="Отрада"
-            className="w-full translate-y-[2px] scale-x-[1.48] scale-y-[1.26] origin-bottom object-contain pointer-events-none select-none"
-          />
-        </div>
+      {/* Нижний логотип белого цвета шириной 1300px прикреплен к самому низу */}
+      <div className="mt-16 flex w-full justify-center overflow-hidden leading-none select-none sm:mt-24 lg:mt-32">
+        <img
+          src={logoWhite}
+          alt="Отрада"
+          className="block w-full max-w-[1300px] object-contain pointer-events-none select-none"
+          loading="lazy"
+          width={1300}
+          height={364}
+        />
       </div>
     </footer>
   );
