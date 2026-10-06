@@ -54,7 +54,7 @@ export default function FluidTabs({
       role="tablist"
       aria-label="Выбор планировки"
       className={cn(
-        "relative grid h-[63px] w-full max-w-[324px] grid-cols-4 items-center rounded-[20px] bg-layouts-tab p-2",
+        "relative grid h-[63px] w-full max-w-full sm:w-[324px] sm:shrink-0 grid-cols-4 items-center rounded-[20px] bg-layouts-tab p-2",
         className,
       )}
     >

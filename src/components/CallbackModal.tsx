@@ -5,9 +5,7 @@ import {
   ExpandableScreenContent,
   ExpandableScreenTrigger,
 } from "./ExpandableScreen";
-
-const inputClass =
-  "w-full rounded-[4px] border border-slate-200 bg-white px-4 py-3.5 text-base text-ink placeholder:text-muted-foreground transition-colors focus:border-[#023352] focus:outline-none";
+import { FloatingInput } from "./FloatingInput";
 
 export function CallbackButton({
   layoutId,
@@ -37,7 +35,7 @@ export function CallbackButton({
         </button>
       </ExpandableScreenTrigger>
       <ExpandableScreenContent
-        className="flex h-full! w-full! flex-col justify-center overflow-y-auto rounded-[12px] bg-white p-6 text-card-foreground shadow-2xl sm:p-10 md:p-12"
+        className="flex h-full! w-full! flex-col justify-center overflow-y-auto rounded-[12px] bg-white p-[12px] text-card-foreground shadow-2xl sm:p-6 md:p-8"
         closeButtonClassName="text-[#001826] hover:bg-slate-100"
       >
         {sent ? (
@@ -117,56 +115,50 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="m-auto flex w-full max-w-lg flex-col justify-center py-6"
+      className="m-auto flex w-full max-w-lg flex-col justify-center py-2 sm:py-4"
       noValidate
     >
       <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] leading-tight text-center text-[#001826]">
         Заказать звонок
       </h2>
-      <p className="mt-3 text-center text-base leading-[1.5] text-slate-600">
+      <p className="mt-2 text-center text-base leading-[1.5] text-slate-600">
         Оставьте контакты — мы перезвоним вам и ответим на вопросы о квартирах.
       </p>
 
-      <div className="mt-8 flex flex-col gap-5">
-        <label className="flex flex-col gap-2 text-sm font-medium text-[#001826]">
-          Указать ваше имя
-          <input
-            ref={nameRef}
-            className={inputClass}
-            type="text"
-            name="name"
-            autoComplete="name"
-            maxLength={100}
-            placeholder="Ваше имя"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            disabled={loading}
-          />
-        </label>
-        <label className="flex flex-col gap-2 text-sm font-medium text-[#001826]">
-          Указать номер телефона
-          <input
-            className={inputClass}
-            type="tel"
-            name="phone"
-            autoComplete="tel"
-            maxLength={20}
-            placeholder="+7 (___) ___-__-__"
-            value={phone}
-            onChange={(event) => setPhone(event.target.value)}
-            disabled={loading}
-          />
-        </label>
+      <div className="mt-4 sm:mt-5 flex flex-col gap-3">
+        <FloatingInput
+          ref={nameRef}
+          label="Ваше имя"
+          id="callback-name"
+          type="text"
+          name="name"
+          autoComplete="name"
+          maxLength={100}
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          disabled={loading}
+        />
+        <FloatingInput
+          label="Номер телефона"
+          id="callback-phone"
+          type="tel"
+          name="phone"
+          autoComplete="tel"
+          maxLength={20}
+          value={phone}
+          onChange={(event) => setPhone(event.target.value)}
+          disabled={loading}
+        />
       </div>
 
       {error ? (
-        <p className="mt-3 text-sm text-destructive text-center" role="alert">
+        <p className="mt-2.5 text-sm text-destructive text-center" role="alert">
           {error}
         </p>
       ) : null}
 
       <button
-        className="cta-solid mt-8 flex w-full items-center justify-center gap-2 rounded-[4px] py-4 text-base font-medium disabled:opacity-70 disabled:cursor-not-allowed"
+        className="cta-solid mt-4 sm:mt-5 flex w-full items-center justify-center gap-2 rounded-[4px] py-3 text-base font-medium disabled:opacity-70 disabled:cursor-not-allowed"
         type="submit"
         disabled={loading}
       >
@@ -179,7 +171,7 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
           "Отправить"
         )}
       </button>
-      <p className="mt-4 text-center text-xs leading-[1.5] text-slate-500">
+      <p className="mt-2.5 text-center text-xs leading-[1.5] text-slate-500">
         Нажимая кнопку, вы соглашаетесь на обработку персональных данных
       </p>
     </form>

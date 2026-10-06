@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Check, ChevronLeft, ChevronRight, Menu } from "lucide-react";
+import { ArrowRight, Check, ChevronLeft, ChevronRight, Loader2, Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import facadeAsset from "../assets/the facade of the house_hero block.webp";
 import projectAsset from "../assets/visualization of the house_about.webp";
 import logoDark from "../assets/logo_dark.svg";
@@ -25,6 +26,7 @@ import constr2025_11 from "../assets/2025_11.webp";
 import constr2025_09 from "../assets/2025_09.webp";
 import constr2025_07 from "../assets/2025_07.webp";
 import { CallbackButton } from "../components/CallbackModal";
+import { FloatingInput } from "../components/FloatingInput";
 import FluidTabs from "../components/FluidTabs";
 import StackedSections from "../components/StackedSections";
 
@@ -115,10 +117,12 @@ function useInView<T extends Element>(threshold = 0.25) {
 function Header() {
   const [visible, setVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
+      if (menuOpen) return;
       const currentScrollY = Math.max(0, window.scrollY);
       const prevScrollY = lastScrollYRef.current;
       const diff = currentScrollY - prevScrollY;
@@ -142,33 +146,41 @@ function Header() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [menuOpen]);
 
   return (
     <div
       className={`fixed left-0 right-0 z-50 px-5 transition-all duration-300 ease-out sm:px-8 lg:px-12 ${
         scrolled ? "top-3 sm:top-4" : "top-5 sm:top-8"
-      } ${
-        visible ? "translate-y-0 opacity-100" : "-translate-y-[150%] opacity-0 pointer-events-none"
-      }`}
+      } ${visible || menuOpen ? "translate-y-0" : "-translate-y-[calc(100%+3rem)] pointer-events-none"}`}
     >
-      <header className="header-shell mx-auto flex w-full max-w-[1300px] items-center rounded-[12px] p-[12px] backdrop-blur-[25px]">
+      <header className="header-shell mx-auto flex h-[60px] xl:h-[75px] w-full max-w-[1300px] items-center rounded-[12px] px-[12px] sm:px-4 backdrop-blur-[25px]">
         <a
           href="/"
           className="inline-flex shrink-0 items-center transition-opacity hover:opacity-80"
           aria-label="На главную"
+          onClick={() => setMenuOpen(false)}
         >
           <img
             src={logoDark}
             alt="Отрада — на главную"
-            className="w-[100px] object-contain"
+            className="w-[78px] sm:w-[88px] xl:w-[100px] object-contain"
             width={100}
             height={28}
           />
         </a>
 
-        <div className="ml-auto flex items-center gap-4 lg:gap-5">
-          <nav className="hidden items-center gap-5 lg:flex" aria-label="Основная навигация">
+        <div className="ml-auto hidden items-center gap-4 xl:flex xl:gap-5">
+          <nav className="flex items-center gap-5" aria-label="Основная навигация">
             <a className="nav-link" href="#about">
               О проекте
             </a>
@@ -189,13 +201,80 @@ function Header() {
           <CallbackButton layoutId="callback-header" triggerRadius="4px" />
         </div>
         <button
-          className="ml-2 grid size-10 place-items-center rounded-[4px] text-ink transition-colors hover:bg-black/5 lg:hidden"
+          className="ml-auto grid size-10 place-items-center rounded-[4px] text-ink transition-colors hover:bg-black/5 xl:hidden"
           type="button"
-          aria-label="Открыть меню"
+          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
+          aria-expanded={menuOpen}
         >
-          <Menu aria-hidden="true" size={24} strokeWidth={1.6} />
+          {menuOpen ? (
+            <X aria-hidden="true" size={24} strokeWidth={1.6} />
+          ) : (
+            <Menu aria-hidden="true" size={24} strokeWidth={1.6} />
+          )}
         </button>
       </header>
+
+      {/* Выпадающее мобильное бургер-меню */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="mx-auto mt-2 flex w-full max-w-[1300px] flex-col gap-3 rounded-[12px] border border-slate-200/90 bg-white p-[12px] shadow-2xl text-[#001826] sm:gap-4 sm:p-5 xl:hidden"
+          >
+            <nav
+              className="flex flex-col gap-1 font-sans text-base text-[#001826]"
+              aria-label="Мобильная навигация"
+            >
+              <a
+                className="rounded-[6px] px-3 py-2.5 font-medium transition-colors hover:bg-slate-100"
+                href="#about"
+                onClick={() => setMenuOpen(false)}
+              >
+                О проекте
+              </a>
+              <a
+                className="rounded-[6px] px-3 py-2.5 font-medium transition-colors hover:bg-slate-100"
+                href="#benefits"
+                onClick={() => setMenuOpen(false)}
+              >
+                Преимущества
+              </a>
+              <a
+                className="rounded-[6px] px-3 py-2.5 font-medium transition-colors hover:bg-slate-100"
+                href="#layouts"
+                onClick={() => setMenuOpen(false)}
+              >
+                Планировки
+              </a>
+              <a
+                className="rounded-[6px] px-3 py-2.5 font-medium transition-colors hover:bg-slate-100"
+                href="#construction"
+                onClick={() => setMenuOpen(false)}
+              >
+                Ход строительства
+              </a>
+              <a
+                className="rounded-[6px] px-3 py-2.5 font-medium transition-colors hover:bg-slate-100"
+                href="#contacts"
+                onClick={() => setMenuOpen(false)}
+              >
+                Контакты
+              </a>
+            </nav>
+            <div className="pt-2 border-t border-slate-100">
+              <CallbackButton
+                layoutId="callback-header-mobile"
+                triggerRadius="4px"
+                className="flex h-[48px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-sm font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -214,7 +293,7 @@ function Index() {
           height={1080}
         />
 
-        <div className="mx-auto flex min-h-[100svh] w-full max-w-layouts flex-col px-5 pb-10 pt-5 sm:px-8 sm:pb-14 sm:pt-8 lg:px-12">
+        <div className="mx-auto flex min-h-[100svh] w-full max-w-layouts flex-col px-3 pb-10 pt-3 sm:px-8 sm:pb-14 sm:pt-8 lg:px-12">
           {/* Заглушка для сохранения исходной высоты первого экрана */}
           <div className="h-[75px] w-full" aria-hidden="true" />
 
@@ -229,21 +308,25 @@ function Index() {
               >
                 Жизнь - это Отрада
               </h1>
-              <p className="hero-enter hero-delay-2 hero-text-shadow mt-6 max-w-none whitespace-nowrap text-[clamp(1rem,2.8vw,1.75rem)] leading-relaxed text-foreground/90">
-                Ваша новая квартира в самом центре Ульяновска
+              <p className="hero-enter hero-delay-2 hero-text-shadow mt-6 max-w-none text-[clamp(1rem,2.8vw,1.75rem)] leading-relaxed text-foreground/90 sm:whitespace-nowrap">
+                Ваша новая квартира в самом центре <br className="sm:hidden" />
+                Ульяновска
               </p>
               <div className="hero-enter hero-delay-4 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <a className="cta-outline group rounded-[4px]" href="#layouts">
-                  Посмотреть планировки
+                <a
+                  className="cta-outline group flex w-full items-center justify-center whitespace-nowrap rounded-[4px] sm:w-auto"
+                  href="#layouts"
+                >
+                  <span className="whitespace-nowrap">Посмотреть планировки</span>
                   <ArrowRight
-                    className="transition-transform group-hover:translate-x-1"
+                    className="shrink-0 transition-transform group-hover:translate-x-1"
                     aria-hidden="true"
                     size={19}
                   />
                 </a>
                 <CallbackButton
                   layoutId="callback-hero"
-                  className="cta-solid cta-large rounded-[4px]"
+                  className="cta-solid cta-large flex w-full items-center justify-center rounded-[4px] sm:w-auto"
                   triggerRadius="4px"
                 />
               </div>
@@ -282,20 +365,20 @@ function AboutSection() {
       className="bg-white text-[#001826] pt-[100px] pb-[100px]"
       aria-labelledby="about-title"
     >
-      <div className="mx-auto w-full max-w-layouts px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <h2
           id="about-title"
-          className="font-display text-[clamp(1.75rem,4vw,2.875rem)] leading-tight text-[#001826]"
+          className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-[#001826]"
         >
           О проекте
         </h2>
 
-        <div className="mt-10 flex flex-col items-center gap-10 lg:flex-row lg:items-start lg:gap-[100px]">
+        <div className="mt-10 flex flex-col items-center gap-10 xl:flex-row xl:items-start xl:gap-[100px]">
           {/* Фотография 550x680 скругление 12px */}
-          <div className="w-full max-w-[550px] shrink-0">
+          <div className="w-full max-w-[700px] shrink-0 xl:max-w-[550px]">
             <img
               ref={imgRef}
-              className={`reveal-up h-[680px] w-full rounded-[12px] object-cover shadow-sm ${
+              className={`reveal-up h-[380px] sm:h-[480px] md:h-[560px] xl:h-[680px] w-full rounded-[12px] object-cover shadow-sm ${
                 imgInView ? "reveal-up-in" : ""
               }`}
               src={projectAsset}
@@ -307,7 +390,7 @@ function AboutSection() {
           </div>
 
           {/* Текстовый блок: параграф + в 40px табличка спецификаций */}
-          <div className="flex flex-1 flex-col">
+          <div className="flex w-full flex-1 flex-col">
             <p className="font-sans text-base leading-[1.6] text-[#001826] sm:text-lg">
               «Отрада» — девятиэтажный дом в тихой части исторического центра Ульяновска, на улице
               Мира. Камерный формат проекта принципиально отличается от плотных многоэтажных
@@ -360,7 +443,7 @@ const benefitsData = [
   {
     title: "Окружение и инфраструктура",
     image: environmentAsset,
-    text: "Исторический центр обеспечивает городскую автономность: всё необходимое для жизни находится в радиусе короткой пешей прогулки. В пяти-семи минутах от дома сосредоточены ведущие гимназии и статусные школы города. Дорога на занятия занимает минимум времени и проходит по спокойным центральным улицам — без утренних пробок, ожидания транспорта и сложных маршрутов.\n\nБуквально за углом начинается главная городская жизнь. На соседних улицах сформировался насыщенный кластер для отдыха: пешеходные зоны с брусчаткой, атмосферные кофейни, авторские рестораны, зеленые скверы, театры и набережная.",
+    text: "Всё необходимое для жизни находится в радиусе короткой пешей прогулки. В пяти-семи минутах от дома сосредоточены ведущие гимназии и статусные школы города. Дорога на занятия занимает минимум времени и проходит по спокойным центральным улицам.\nБуквально за углом начинается главная городская жизнь. На соседних улицах сформировался насыщенный кластер для отдыха: пешеходные зоны с брусчаткой, атмосферные кофейни, авторские рестораны, зеленые скверы, театры и набережная.",
   },
 ];
 
@@ -371,34 +454,36 @@ function BenefitsSection() {
       className="bg-[#023352] text-foreground"
       aria-labelledby="benefits-title"
     >
-      <div className="mx-auto w-full max-w-layouts px-5 pb-24 pt-[100px] sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-layouts px-3 pb-24 pt-[100px] sm:px-8 lg:px-12">
         <h2
           id="benefits-title"
-          className="font-display text-[clamp(1.75rem,4vw,2.875rem)] leading-tight text-white"
+          className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-white"
         >
           Преимущества
         </h2>
 
-        <div className="mx-auto mt-10 w-full max-w-[1400px]">
-          <StackedSections stackOffset={18} paneGap="gap-[60vh] lg:gap-3" scrollRunway="25vh">
+        <div className="mx-auto mt-6 sm:mt-10 w-full max-w-[1400px]">
+          <StackedSections stackOffset={12} paneGap="gap-[65vh]" scrollRunway="25vh">
             {benefitsData.map((item, index) => (
               <article
                 key={index}
-                className="flex w-full max-w-[1400px] flex-col gap-[30px] rounded-[12px] bg-card p-[20px] text-card-foreground shadow-[0_-4px_20px_rgba(0,0,0,0.1)] lg:flex-row lg:items-start"
+                className="flex w-full max-w-[1400px] flex-col gap-[12px] lg:flex-row lg:items-start lg:gap-8 xl:gap-10 rounded-[12px] bg-card p-[12px] sm:p-5 text-card-foreground shadow-[0_-4px_20px_rgba(0,0,0,0.1)]"
               >
-                <img
-                  className="h-[220px] w-full shrink-0 rounded-[4px] object-cover sm:h-[300px] lg:h-[400px] lg:w-[600px]"
-                  src={item.image}
-                  alt={`${item.title} — жилой дом «Отрада»`}
-                  loading="lazy"
-                  width={600}
-                  height={400}
-                />
-                <div className="flex flex-1 flex-col">
-                  <h3 className="font-sans text-[1.5rem] font-medium leading-tight text-[#001826] sm:text-[1.75rem] lg:text-[2rem]">
+                <div className="w-full shrink-0 lg:w-[46%] xl:w-[600px]">
+                  <img
+                    className="h-[180px] w-full rounded-[6px] object-cover sm:h-[240px] md:h-[300px] lg:h-[360px] xl:h-[400px] xl:w-[600px]"
+                    src={item.image}
+                    alt={`${item.title} — жилой дом «Отрада»`}
+                    loading="lazy"
+                    width={600}
+                    height={400}
+                  />
+                </div>
+                <div className="flex flex-1 flex-col justify-start">
+                  <h3 className="font-sans text-[1.375rem] font-medium leading-tight text-[#001826] sm:text-[1.625rem] lg:text-[1.875rem]">
                     {item.title}
                   </h3>
-                  <p className="mt-[10px] whitespace-pre-line text-sm leading-[1.6] text-card-foreground/85 sm:text-base">
+                  <p className="mt-[8px] sm:mt-3 whitespace-pre-line text-xs leading-[1.6] text-card-foreground/85 sm:text-sm md:text-base">
                     {item.text}
                   </p>
                 </div>
@@ -491,7 +576,7 @@ function ApartmentCardsGrid({
       {apartments.map((item, index) => (
         <article
           key={item.id}
-          className="flex w-full max-w-[440px] flex-col justify-between gap-[40px] rounded-[12px] bg-white p-[20px] shadow-lg sm:w-fit"
+          className="flex w-full max-w-[440px] flex-col justify-between gap-[40px] rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-fit"
         >
           {/* Элемент 1: заголовок h3 */}
           <h3 className="text-center font-sans text-2xl font-normal leading-tight text-[#001826] sm:text-[1.75rem]">
@@ -552,11 +637,11 @@ function LayoutsSection() {
 
   return (
     <section id="layouts" className="bg-layouts text-foreground" aria-labelledby="layouts-title">
-      <div className="mx-auto w-full max-w-layouts px-5 pb-24 pt-[100px] sm:px-8 lg:px-12">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+      <div className="mx-auto w-full max-w-layouts px-3 pb-24 pt-[100px] sm:px-8 lg:px-12">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <h2
             id="layouts-title"
-            className="font-display text-[clamp(1.75rem,4vw,2.875rem)] leading-tight"
+            className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight"
           >
             Планировки
           </h2>
@@ -564,7 +649,6 @@ function LayoutsSection() {
             labels={layoutTabs}
             activeIndex={activeTab}
             onActiveIndexChange={setActiveTab}
-            className="lg:mt-[21px]"
           />
         </div>
 
@@ -581,7 +665,7 @@ function LayoutsSection() {
           ) : activeTab === 3 ? (
             <ApartmentCardsGrid apartments={oneRoomApartments} tabKey="1room" />
           ) : (
-            <article className="flex w-full max-w-[760px] flex-col gap-10 rounded-[12px] bg-white p-[20px] shadow-lg sm:w-fit">
+            <article className="flex w-full max-w-[760px] flex-col gap-10 rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-fit">
               <h3 className="text-center font-sans text-2xl font-medium leading-tight text-[#001826] sm:text-[1.75rem]">
                 {currentLayout.title}
               </h3>
@@ -651,7 +735,8 @@ function ConstructionSection() {
   const handleScroll = (direction: "left" | "right") => {
     const el = sliderRef.current;
     if (!el) return;
-    const scrollAmount = 420; // 400px card + 20px gap
+    const firstChild = el.firstElementChild as HTMLElement | null;
+    const scrollAmount = firstChild ? firstChild.offsetWidth + 16 : 380;
     el.scrollBy({
       left: direction === "left" ? -scrollAmount : scrollAmount,
       behavior: "smooth",
@@ -664,10 +749,10 @@ function ConstructionSection() {
       className="bg-white text-[#001826] pt-[100px] pb-[100px]"
       aria-labelledby="construction-title"
     >
-      <div className="mx-auto w-full max-w-layouts px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <h2
           id="construction-title"
-          className="font-display text-[clamp(1.75rem,4vw,2.875rem)] leading-tight text-[#001826]"
+          className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-[#001826]"
         >
           Ход строительства
         </h2>
@@ -676,12 +761,15 @@ function ConstructionSection() {
       <div
         ref={sliderRef}
         onScroll={checkScroll}
-        className="mt-[40px] flex w-full gap-[20px] overflow-x-auto scroll-smooth px-5 pb-2 pt-1 scrollbar-none sm:px-8 lg:px-[max(3rem,calc((100vw-87.5rem)/2+3rem))]"
+        className="mt-6 sm:mt-[40px] flex w-full gap-3 sm:gap-5 overflow-x-auto scroll-smooth px-3 pb-2 pt-1 scrollbar-none sm:px-8 lg:px-[max(3rem,calc((100vw-87.5rem)/2+3rem))]"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {constructionItems.map((item) => (
-          <article key={item.id} className="w-[400px] shrink-0">
-            <div className="h-[400px] w-[400px] overflow-hidden rounded-[12px] border border-slate-100 bg-[#f8fafc] shadow-sm">
+          <article
+            key={item.id}
+            className="w-[76vw] max-w-[400px] shrink-0 sm:w-[320px] md:w-[380px] lg:w-[400px]"
+          >
+            <div className="aspect-square w-full overflow-hidden rounded-[12px] border border-slate-100 bg-[#f8fafc] shadow-sm">
               {item.imageSrc ? (
                 <img
                   src={item.imageSrc}
@@ -734,17 +822,17 @@ function ContactsSection() {
       className="bg-white text-[#001826] pt-[100px] pb-[100px]"
       aria-labelledby="contacts-title"
     >
-      <div className="mx-auto w-full max-w-layouts px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <h2
           id="contacts-title"
-          className="font-display text-[clamp(1.75rem,4vw,2.875rem)] leading-tight text-[#001826]"
+          className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-[#001826]"
         >
           Наши контакты
         </h2>
 
-        <div className="mt-[40px] flex flex-col items-center gap-[50px] lg:flex-row">
-          {/* Яндекс.Карты (600x400) */}
-          <div className="h-[400px] w-full max-w-[600px] shrink-0 overflow-hidden rounded-[20px] border border-slate-100 bg-[#f8fafc] shadow-sm">
+        <div className="mt-[40px] flex flex-col items-start gap-[40px] xl:flex-row xl:items-start xl:gap-[50px]">
+          {/* Яндекс.Карты */}
+          <div className="h-[360px] sm:h-[420px] w-full shrink-0 overflow-hidden rounded-[12px] border border-slate-100 bg-[#f8fafc] shadow-sm xl:h-[450px] xl:w-[600px] xl:max-w-[600px]">
             <iframe
               src="https://yandex.ru/map-widget/v1/?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A3%D0%BB%D1%8C%D1%8F%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A5%D0%B2%D0%B0%D1%82%D0%BA%D0%BE%D0%B2%D0%B0%2C%20%D0%B4%D0%BE%D0%BC%2028%D0%91&z=16"
               width="100%"
@@ -757,15 +845,15 @@ function ContactsSection() {
           </div>
 
           {/* Текстовый блок с контактами */}
-          <div className="flex flex-1 flex-col justify-center gap-6">
-            <div>
+          <div className="flex w-full flex-1 flex-col items-start justify-center gap-6 text-left">
+            <div className="text-left">
               <span className="block text-sm text-[#001826]/50 sm:text-base">Адрес</span>
               <p className="mt-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
                 г. Ульяновск, ул. Хваткова, дом, 28В, офис 208
               </p>
             </div>
 
-            <div>
+            <div className="text-left">
               <span className="block text-sm text-[#001826]/50 sm:text-base">
                 Электронная почта
               </span>
@@ -779,9 +867,9 @@ function ContactsSection() {
               </p>
             </div>
 
-            <div>
+            <div className="text-left">
               <span className="block text-sm text-[#001826]/50 sm:text-base">Номер приемной</span>
-              <div className="mt-1 flex flex-col gap-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
+              <div className="mt-1 flex flex-col items-start gap-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
                 <a
                   href="tel:+78422584406"
                   className="underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
@@ -797,11 +885,11 @@ function ContactsSection() {
               </div>
             </div>
 
-            <div>
+            <div className="text-left">
               <span className="block text-sm text-[#001826]/50 sm:text-base">
                 Номер отдела продаж
               </span>
-              <div className="mt-1 flex flex-col gap-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
+              <div className="mt-1 flex flex-col items-start gap-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
                 <a
                   href="tel:+78422748000"
                   className="underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
@@ -825,8 +913,9 @@ function QuestionsSection() {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!name.trim()) {
       setError("Укажите ваше имя");
@@ -837,7 +926,35 @@ function QuestionsSection() {
       return;
     }
     setError(null);
-    setSent(true);
+    setLoading(true);
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/abakarovarslanmark@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          Имя: name.trim(),
+          Телефон: phone.trim(),
+          _subject: "Новый вопрос с сайта ЖК «Отрада»",
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Не удалось отправить заявку");
+      }
+
+      setSent(true);
+    } catch (err) {
+      console.error("Ошибка при отправке вопроса:", err);
+      setSent(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -846,21 +963,21 @@ function QuestionsSection() {
       className="bg-[#023352] text-foreground pt-[100px] pb-[100px]"
       aria-labelledby="questions-title"
     >
-      <div className="mx-auto w-full max-w-layouts px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <h2
           id="questions-title"
-          className="text-center font-display text-[clamp(1.75rem,4vw,2.875rem)] leading-tight text-white"
+          className="text-left font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-white"
         >
           Остались вопросы!
         </h2>
 
-        <div className="mt-[40px] mx-auto w-full max-w-[600px] rounded-[24px] bg-white p-6 sm:p-10 shadow-2xl text-[#001826]">
+        <div className="mt-6 sm:mt-8 mx-auto w-full max-w-full sm:max-w-[560px] rounded-[12px] bg-white p-[12px] sm:p-6 shadow-2xl text-[#001826]">
           {sent ? (
-            <div className="flex flex-col items-center py-8 text-center">
-              <span className="grid size-16 place-items-center rounded-full bg-brand/10 text-brand">
-                <Check aria-hidden="true" size={32} strokeWidth={2} />
+            <div className="flex flex-col items-start py-6 text-left">
+              <span className="grid size-14 place-items-center rounded-full bg-brand/10 text-brand">
+                <Check aria-hidden="true" size={28} strokeWidth={2} />
               </span>
-              <h3 className="mt-5 font-display text-2xl sm:text-3xl leading-tight text-[#001826]">
+              <h3 className="mt-4 font-sans text-xl font-medium sm:text-2xl leading-tight text-[#001826]">
                 Заявка отправлена
               </h3>
               <p className="mt-2 text-base leading-[1.5] text-slate-600">
@@ -873,59 +990,63 @@ function QuestionsSection() {
                   setName("");
                   setPhone("");
                 }}
-                className="mt-6 text-sm font-medium text-[#023352] underline underline-offset-4 hover:opacity-80"
+                className="mt-4 text-sm font-medium text-[#023352] underline underline-offset-4 hover:opacity-80"
               >
                 Отправить ещё одну заявку
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="flex flex-col">
-              <h3 className="font-display text-xl sm:text-2xl text-center text-[#001826] leading-snug">
-                Оставьте ваш контакт, и мы на всё ответим
+            <form onSubmit={handleSubmit} noValidate className="flex flex-col text-left">
+              <h3 className="text-center font-sans text-xl font-normal leading-tight text-[#001826] sm:text-2xl">
+                Мы на всё ответим
               </h3>
 
-              <div className="mt-8 flex flex-col gap-5">
-                <label className="flex flex-col gap-2 text-sm font-medium text-[#001826]">
-                  Указать ваше имя
-                  <input
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-ink placeholder:text-muted-foreground transition-colors focus:border-[#023352] focus:outline-none"
-                    type="text"
-                    name="name"
-                    autoComplete="name"
-                    maxLength={100}
-                    placeholder="Ваше имя"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                  />
-                </label>
-                <label className="flex flex-col gap-2 text-sm font-medium text-[#001826]">
-                  Указать номер телефона
-                  <input
-                    className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3.5 text-base text-ink placeholder:text-muted-foreground transition-colors focus:border-[#023352] focus:outline-none"
-                    type="tel"
-                    name="phone"
-                    autoComplete="tel"
-                    maxLength={20}
-                    placeholder="+7 (___) ___-__-__"
-                    value={phone}
-                    onChange={(event) => setPhone(event.target.value)}
-                  />
-                </label>
+              <div className="mt-4 sm:mt-5 flex flex-col gap-3">
+                <FloatingInput
+                  label="Ваше имя"
+                  id="questions-name"
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  maxLength={100}
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  disabled={loading}
+                />
+                <FloatingInput
+                  label="Номер телефона"
+                  id="questions-phone"
+                  type="tel"
+                  name="phone"
+                  autoComplete="tel"
+                  maxLength={20}
+                  value={phone}
+                  onChange={(event) => setPhone(event.target.value)}
+                  disabled={loading}
+                />
               </div>
 
               {error ? (
-                <p className="mt-3 text-sm text-destructive text-center" role="alert">
+                <p className="mt-2.5 text-sm text-destructive text-left" role="alert">
                   {error}
                 </p>
               ) : null}
 
               <button
-                className="cta-solid mt-8 w-full rounded-[4px] py-4 text-base font-medium"
+                className="cta-solid mt-4 sm:mt-5 flex w-full items-center justify-center gap-2 rounded-[4px] py-3 text-base font-medium disabled:opacity-70 disabled:cursor-not-allowed"
                 type="submit"
+                disabled={loading}
               >
-                Отправить
+                {loading ? (
+                  <>
+                    <Loader2 className="size-5 animate-spin" />
+                    <span>Отправка...</span>
+                  </>
+                ) : (
+                  "Отправить"
+                )}
               </button>
-              <p className="mt-4 text-center text-xs leading-[1.5] text-slate-500">
+              <p className="mt-3 text-center text-xs leading-[1.5] text-slate-500">
                 Нажимая кнопку, вы соглашаетесь на обработку персональных данных
               </p>
             </form>
@@ -942,7 +1063,7 @@ function FooterSection() {
       className="overflow-hidden bg-[#023352] pt-[100px] text-white"
       aria-label="Подвал сайта"
     >
-      <div className="mx-auto w-full max-w-layouts px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {/* Левая колонка — На сайте */}
           <div className="flex flex-col items-start text-left">
@@ -983,18 +1104,18 @@ function FooterSection() {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Нижний логотип белого цвета шириной 1300px прикреплен к самому низу */}
-      <div className="mt-16 flex w-full justify-center overflow-hidden leading-none select-none sm:mt-24 lg:mt-32">
-        <img
-          src={logoWhite}
-          alt="Отрада"
-          className="block w-full max-w-[1300px] object-contain pointer-events-none select-none"
-          loading="lazy"
-          width={1300}
-          height={364}
-        />
+        {/* Нижний логотип белого цвета внутри общего контейнера с отступами по бокам */}
+        <div className="mt-16 flex w-full justify-center overflow-hidden leading-none select-none sm:mt-24 lg:mt-32">
+          <img
+            src={logoWhite}
+            alt="Отрада"
+            className="block w-full max-w-[1300px] object-contain pointer-events-none select-none"
+            loading="lazy"
+            width={1300}
+            height={364}
+          />
+        </div>
       </div>
     </footer>
   );

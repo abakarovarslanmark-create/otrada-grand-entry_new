@@ -69,7 +69,7 @@ export default function StackedSections({
   React.useEffect(() => {
     const handleResize = () => {
       if (typeof window !== "undefined" && window.innerWidth < 1024) {
-        setCurrentStackOffset(Math.min(stackOffset, 16));
+        setCurrentStackOffset(Math.min(stackOffset, 12));
       } else {
         setCurrentStackOffset(stackOffset);
       }

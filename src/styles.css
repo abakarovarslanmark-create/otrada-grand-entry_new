@@ -19,6 +19,14 @@
  */
 
 @theme inline {
+  --spacing: .2rem;
+  --breakpoint-xs: 30rem; /* 480px */
+  --breakpoint-sm: 40rem; /* 640px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 80rem; /* 1280px */
+  --breakpoint-2xl: 90rem; /* 1440px */
+  --breakpoint-3xl: 120rem; /* 1920px */
   --font-sans: "Geist", sans-serif;
   --font-display: "Zen Old Mincho", serif;
   --spacing-site: 87.5rem;
@@ -74,6 +82,7 @@
 }
 
 :root {
+  --spacing: .2rem;
   --radius: 0.5rem;
   --background: oklch(0.16 0.035 232);
   --foreground: oklch(0.98 0.005 230);
@@ -187,6 +196,7 @@
 @utility nav-link {
   color: color-mix(in oklab, var(--nav-ink, var(--foreground)) 88%, transparent);
   font-size: 1rem;
+  white-space: nowrap;
   transition: color 180ms ease;
   &:hover {
     color: var(--nav-ink, var(--foreground));
@@ -245,6 +255,7 @@
   gap: 0.75rem;
   justify-content: center;
   padding: 0.75rem 1.5rem;
+  white-space: nowrap;
   transition:
     background-color 180ms ease,
     border-color 180ms ease;
