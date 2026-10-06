@@ -356,6 +356,30 @@ const projectSpecs = [
   { label: "Класс энергоэффективности", value: "A+" },
 ];
 
+const specsContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const specRowVariants = {
+  hidden: {
+    opacity: 0,
+    y: 14,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+};
+
 function AboutSection() {
   const { ref: imgRef, inView: imgInView } = useInView<HTMLImageElement>();
 
@@ -401,17 +425,24 @@ function AboutSection() {
               с приватностью, тишиной и полным бытовым комфортом
             </p>
 
-            <div className="mt-[40px] flex flex-col">
+            <motion.div
+              className="mt-[40px] flex flex-col"
+              variants={specsContainerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
               {projectSpecs.map((spec, index) => (
-                <div
+                <motion.div
                   key={index}
+                  variants={specRowVariants}
                   className="grid grid-cols-1 border-b border-[#001826]/30 py-3.5 text-base sm:grid-cols-2 sm:text-lg"
                 >
                   <span className="text-[#001826]/50">{spec.label}</span>
                   <span className="font-normal text-[#001826]">{spec.value}</span>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
