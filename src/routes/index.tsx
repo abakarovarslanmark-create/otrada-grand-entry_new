@@ -999,7 +999,7 @@ function QuestionsSection() {
           id="questions-title"
           className="text-left font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-white"
         >
-          Остались вопросы!
+          Остались вопросы?
         </h2>
 
         <div className="mt-6 sm:mt-8 mx-auto w-full max-w-full sm:max-w-[560px] rounded-[12px] bg-white p-[12px] sm:p-6 shadow-2xl text-[#001826]">
