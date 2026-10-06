@@ -483,7 +483,7 @@ function BenefitsSection() {
                   <h3 className="font-sans text-[1.375rem] font-medium leading-tight text-[#001826] sm:text-[1.625rem] lg:text-[1.875rem]">
                     {item.title}
                   </h3>
-                  <p className="mt-[8px] sm:mt-3 whitespace-pre-line text-xs leading-[1.6] text-card-foreground/85 sm:text-sm md:text-base">
+                  <p className="mt-[8px] sm:mt-3 whitespace-pre-line text-base leading-[1.6] text-card-foreground/85">
                     {item.text}
                   </p>
                 </div>
@@ -608,7 +608,7 @@ function ApartmentCardsGrid({
 
           {/* Элемент 3: текст с кнопкой */}
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col items-center gap-1.5 text-center text-sm text-[#001826] sm:text-base">
+            <div className="flex flex-col items-center gap-1.5 text-center text-base text-[#001826]">
               <p>
                 <span className="font-bold">{item.totalArea}</span> — площадь всей квартиры
               </p>
