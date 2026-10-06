@@ -56,13 +56,9 @@ export default function StackedSections({
   cardRefs.current.length = total;
   contentRefs.current.length = total;
 
-  const scaleAtDepth = React.useCallback(
-    (cardIndex: number) => {
-      const reverseIndex = total - (cardIndex - 1);
-      return 1.1 - 0.1 * reverseIndex;
-    },
-    [total],
-  );
+  const scaleAtDepth = React.useCallback((depth: number) => {
+    return Math.max(0.9, 1 - 0.03 * depth);
+  }, []);
 
   const [currentStackOffset, setCurrentStackOffset] = React.useState(stackOffset);
 
@@ -79,7 +75,7 @@ export default function StackedSections({
     return () => window.removeEventListener("resize", handleResize);
   }, [stackOffset]);
 
-  // Scale on `.card__content` only. Each pane freezes once the next card has pinned.
+  // Smooth scroll animations on `.card__content`: entrance gliding and stacking depth
   React.useEffect(() => {
     if (!withDramaEffect || total === 0) {
       return;
@@ -96,20 +92,17 @@ export default function StackedSections({
     const scroller = getScrollParent(deck);
     let frame = 0;
 
-    const isNextCardPinned = (cardIndex: number, containerTop: number) => {
-      const nextCard = cardRefs.current[cardIndex + 1];
-      if (!nextCard) {
-        return false;
-      }
-      return (
-        nextCard.getBoundingClientRect().top - containerTop <=
-        (cardIndex + 1) * currentStackOffset + 1
-      );
+    const isPinned = (cardIndex: number, containerTop: number) => {
+      const card = cardRefs.current[cardIndex];
+      if (!card) return false;
+      const pinnedTop = (cardIndex + 1) * currentStackOffset;
+      return card.getBoundingClientRect().top - containerTop <= pinnedTop + 1;
     };
 
     const update = () => {
       frame = 0;
       const containerTop = scroller ? scroller.getBoundingClientRect().top : 0;
+      const viewportHeight = window.innerHeight || 800;
 
       for (let i = 0; i < total; i++) {
         const card = cardRefs.current[i];
@@ -118,30 +111,75 @@ export default function StackedSections({
           continue;
         }
 
-        const endScale = scaleAtDepth(i + 1);
-        const covered = isNextCardPinned(i, containerTop);
+        const pinnedTop = (i + 1) * currentStackOffset;
+        const cardTop = card.getBoundingClientRect().top - containerTop;
+        const nextCard = cardRefs.current[i + 1];
 
-        if (covered) {
+        // 1. Entrance phase: Card is rising from below to its pinned position
+        const distFromPin = cardTop - pinnedTop;
+        if (distFromPin > 0) {
+          const entranceRange = Math.min(viewportHeight * 0.65, 450);
+          const enterProgress = clamp(1 - distFromPin / entranceRange, 0, 1);
+          // Eased progress (ease-out)
+          const eased = enterProgress * (2 - enterProgress);
+          const enterScale = 0.96 + 0.04 * eased;
+          const enterOpacity = 0.5 + 0.5 * eased;
+          const enterY = (1 - eased) * 16;
+
+          content.style.transform = `translate3d(0, ${enterY.toFixed(1)}px, 0) scale(${enterScale.toFixed(3)})`;
+          content.style.opacity = `${enterOpacity.toFixed(2)}`;
+          content.style.filter = "";
+          delete content.dataset["stackedCovered"];
+          continue;
+        }
+
+        // 2. Stacking phase: Check how many subsequent cards have pinned above this one
+        let cardsPinnedAbove = 0;
+        for (let j = i + 1; j < total; j++) {
+          if (isPinned(j, containerTop)) {
+            cardsPinnedAbove++;
+          }
+        }
+
+        if (cardsPinnedAbove > 0) {
           content.dataset["stackedCovered"] = "";
-          content.style.transform = `scale(${endScale})`;
+          const targetScale = scaleAtDepth(cardsPinnedAbove);
+          const targetOpacity = Math.max(0.78, 1 - 0.07 * cardsPinnedAbove);
+          const targetBrightness = Math.max(0.88, 1 - 0.05 * cardsPinnedAbove);
+
+          content.style.transform = `scale(${targetScale.toFixed(3)})`;
+          content.style.opacity = `${targetOpacity.toFixed(2)}`;
+          content.style.filter = `brightness(${targetBrightness.toFixed(2)})`;
           continue;
         }
 
         delete content.dataset["stackedCovered"];
 
-        const nextCard = cardRefs.current[i + 1];
-        if (!nextCard) {
-          content.style.transform = "";
-          continue;
+        // 3. In-flight stacking: Next card is partially sliding over this one
+        if (nextCard) {
+          const nextTop = nextCard.getBoundingClientRect().top - containerTop;
+          const offset = nextTop - pinnedTop;
+          const rowH = card.offsetHeight > 0 ? card.offsetHeight : 1;
+          const distance = Math.max(rowH - pinnedTop, 1);
+          const progress = clamp(1 - offset / distance, 0, 1);
+
+          if (progress > 0.001) {
+            const eased = progress * (2 - progress);
+            const targetScale = 1 - 0.03 * eased;
+            const targetOpacity = 1 - 0.07 * eased;
+            const targetBrightness = 1 - 0.05 * eased;
+
+            content.style.transform = `scale(${targetScale.toFixed(3)})`;
+            content.style.opacity = `${targetOpacity.toFixed(2)}`;
+            content.style.filter = `brightness(${targetBrightness.toFixed(2)})`;
+            continue;
+          }
         }
 
-        const pinnedTop = (i + 1) * currentStackOffset;
-        const offset = nextCard.getBoundingClientRect().top - containerTop - pinnedTop;
-        const rowH = card.offsetHeight > 0 ? card.offsetHeight : 1;
-        const distance = Math.max(rowH - pinnedTop, 1);
-        const progress = clamp(1 - offset / distance, 0, 1);
-        const scale = 1 + (endScale - 1) * progress;
-        content.style.transform = progress <= 0.001 ? "" : `scale(${scale})`;
+        // 4. Default: Fully active pinned card
+        content.style.transform = "scale(1)";
+        content.style.opacity = "1";
+        content.style.filter = "";
       }
     };
 
@@ -168,6 +206,8 @@ export default function StackedSections({
         if (content) {
           delete content.dataset["stackedCovered"];
           content.style.transform = "";
+          content.style.opacity = "";
+          content.style.filter = "";
         }
       }
     };
@@ -217,7 +257,7 @@ export default function StackedSections({
                 contentRefs.current[index] = el;
               }}
               data-stacked-content=""
-              className="origin-[50%_0%]"
+              className="origin-[50%_0%] transition-[transform,opacity,filter] duration-300 ease-out will-change-[transform,opacity]"
             >
               {child}
             </div>

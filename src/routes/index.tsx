@@ -165,10 +165,17 @@ function Header() {
     >
       <header className="header-shell mx-auto flex h-[60px] xl:h-[75px] w-full max-w-[1300px] items-center rounded-[12px] px-[12px] sm:px-4 backdrop-blur-[25px]">
         <a
-          href="/"
-          className="inline-flex shrink-0 items-center transition-opacity hover:opacity-80"
-          aria-label="На главную"
-          onClick={() => setMenuOpen(false)}
+          href="/#hero"
+          className="inline-flex shrink-0 items-center transition-opacity hover:opacity-80 cursor-pointer"
+          aria-label="На главный экран"
+          onClick={(e) => {
+            e.preventDefault();
+            setMenuOpen(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            if (window.location.hash) {
+              window.history.pushState(null, "", window.location.pathname);
+            }
+          }}
         >
           <img
             src={logoDark}
@@ -283,7 +290,7 @@ function Index() {
   return (
     <main className="bg-background text-foreground">
       <Header />
-      <section className="relative isolate min-h-[100svh] overflow-hidden">
+      <section id="hero" className="relative isolate min-h-[100svh] overflow-hidden">
         <img
           className="absolute inset-0 -z-10 size-full object-cover object-[center_72%]"
           src={facadeAsset}
@@ -595,6 +602,49 @@ interface ApartmentItem {
   heatedArea: string;
 }
 
+const layoutGridVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.04,
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.15,
+    },
+  },
+};
+
+const layoutCardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 18,
+    scale: 0.97,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.35,
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -8,
+    scale: 0.98,
+    transition: {
+      duration: 0.15,
+      ease: "easeIn",
+    },
+  },
+};
+
 function ApartmentCardsGrid({
   apartments,
   tabKey,
@@ -603,10 +653,17 @@ function ApartmentCardsGrid({
   tabKey: string;
 }) {
   return (
-    <div className="flex w-full flex-wrap items-stretch justify-center gap-6 lg:gap-8">
+    <motion.div
+      variants={layoutGridVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="flex w-full flex-wrap items-stretch justify-center gap-6 lg:gap-8"
+    >
       {apartments.map((item, index) => (
-        <article
+        <motion.article
           key={item.id}
+          variants={layoutCardVariants}
           className="flex w-full max-w-[440px] flex-col justify-between gap-[40px] rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-fit"
         >
           {/* Элемент 1: заголовок h3 */}
@@ -656,9 +713,9 @@ function ApartmentCardsGrid({
               Узнать подробнее
             </CallbackButton>
           </div>
-        </article>
+        </motion.article>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
@@ -687,47 +744,56 @@ function LayoutsSection() {
           id="layouts-panel"
           role="tabpanel"
           aria-labelledby={`layouts-tab-${activeTab}`}
-          className="mt-10 flex justify-center"
+          className="mt-10 flex justify-center w-full"
         >
-          {activeTab === 1 ? (
-            <ApartmentCardsGrid apartments={threeRoomApartments} tabKey="3room" />
-          ) : activeTab === 2 ? (
-            <ApartmentCardsGrid apartments={twoRoomApartments} tabKey="2room" />
-          ) : activeTab === 3 ? (
-            <ApartmentCardsGrid apartments={oneRoomApartments} tabKey="1room" />
-          ) : (
-            <article className="flex w-full max-w-[760px] flex-col gap-10 rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-fit">
-              <h3 className="text-center font-sans text-2xl font-medium leading-tight text-[#001826] sm:text-[1.75rem]">
-                {currentLayout.title}
-              </h3>
-
-              <div className="flex h-[300px] w-full items-center justify-center overflow-hidden">
-                {currentLayout.imageSrc ? (
-                  <img
-                    src={currentLayout.imageSrc}
-                    alt={currentLayout.imageAlt}
-                    className="h-[300px] w-auto max-w-full object-contain"
-                    loading="lazy"
-                    width={760}
-                    height={300}
-                  />
-                ) : (
-                  <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center text-slate-400">
-                    <img src="" alt={currentLayout.imageAlt} className="hidden" />
-                    <span className="text-sm font-medium">Планировка этажа</span>
-                  </div>
-                )}
-              </div>
-
-              <CallbackButton
-                layoutId={`callback-layouts-${activeTab}`}
-                triggerRadius="4px"
-                className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-base font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
+          <AnimatePresence mode="wait">
+            {activeTab === 1 ? (
+              <ApartmentCardsGrid key="tab-3room" apartments={threeRoomApartments} tabKey="3room" />
+            ) : activeTab === 2 ? (
+              <ApartmentCardsGrid key="tab-2room" apartments={twoRoomApartments} tabKey="2room" />
+            ) : activeTab === 3 ? (
+              <ApartmentCardsGrid key="tab-1room" apartments={oneRoomApartments} tabKey="1room" />
+            ) : (
+              <motion.article
+                key="tab-floor"
+                variants={layoutCardVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="flex w-full max-w-[760px] flex-col gap-10 rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-fit"
               >
-                Выбрать квартиру
-              </CallbackButton>
-            </article>
-          )}
+                <h3 className="text-center font-sans text-2xl font-medium leading-tight text-[#001826] sm:text-[1.75rem]">
+                  {currentLayout.title}
+                </h3>
+
+                <div className="flex h-[300px] w-full items-center justify-center overflow-hidden">
+                  {currentLayout.imageSrc ? (
+                    <img
+                      src={currentLayout.imageSrc}
+                      alt={currentLayout.imageAlt}
+                      className="h-[300px] w-auto max-w-full object-contain"
+                      loading="lazy"
+                      width={760}
+                      height={300}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center text-slate-400">
+                      <img src="" alt={currentLayout.imageAlt} className="hidden" />
+                      <span className="text-sm font-medium">Планировка этажа</span>
+                    </div>
+                  )}
+                </div>
+
+                <CallbackButton
+                  layoutId={`callback-layouts-${activeTab}`}
+                  triggerRadius="4px"
+                  className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-base font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
+                >
+                  Выбрать квартиру
+                </CallbackButton>
+              </motion.article>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>
