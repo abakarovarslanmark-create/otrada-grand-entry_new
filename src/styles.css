@@ -109,7 +109,7 @@
   --brand: oklch(0.68 0.18 240);
   --brand-hover: oklch(0.74 0.16 235);
   --shadow-color: oklch(0.06 0.02 230 / 0.24);
-  --layouts: oklch(0.308895 0.073611 243.517);
+  --layouts: var(--background);
   --layouts-tab: oklch(1 0 0 / 0.2);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);

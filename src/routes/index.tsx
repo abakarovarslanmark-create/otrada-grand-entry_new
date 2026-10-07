@@ -489,7 +489,7 @@ function BenefitsSection() {
   return (
     <section
       id="benefits"
-      className="bg-[#023352] text-foreground"
+      className="bg-background text-foreground"
       aria-labelledby="benefits-title"
     >
       <div className="mx-auto w-full max-w-layouts px-3 pb-24 pt-[100px] sm:px-8 lg:px-12">
@@ -724,7 +724,7 @@ function LayoutsSection() {
   const currentLayout = layoutsData[activeTab] ?? layoutsData[0];
 
   return (
-    <section id="layouts" className="bg-layouts text-foreground" aria-labelledby="layouts-title">
+    <section id="layouts" className="bg-background text-foreground" aria-labelledby="layouts-title">
       <div className="mx-auto w-full max-w-layouts px-3 pb-24 pt-[100px] sm:px-8 lg:px-12">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <h2
@@ -1011,6 +1011,7 @@ function QuestionsSection() {
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submittedData, setSubmittedData] = useState<{ name: string; phone: string } | null>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -1025,17 +1026,20 @@ function QuestionsSection() {
     setError(null);
     setLoading(true);
 
+    const formData = { name: name.trim(), phone: phone.trim() };
+
     try {
-      const response = await fetch("https://formsubmit.co/ajax/abakarovarslanmark@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/d7065831f87a32849ba1b1881938f2be", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
         body: JSON.stringify({
-          Имя: name.trim(),
-          Телефон: phone.trim(),
-          _subject: "Новый вопрос с сайта ЖК «Отрада»",
+          "Имя клиента": formData.name,
+          "Номер телефона": formData.phone,
+          "Форма на сайте": "Блок «Остались вопросы»",
+          _subject: `Новая заявка: ${formData.name} (${formData.phone})`,
           _template: "table",
           _captcha: "false",
         }),
@@ -1045,9 +1049,11 @@ function QuestionsSection() {
         throw new Error("Не удалось отправить заявку");
       }
 
+      setSubmittedData(formData);
       setSent(true);
     } catch (err) {
       console.error("Ошибка при отправке вопроса:", err);
+      setSubmittedData(formData);
       setSent(true);
     } finally {
       setLoading(false);
@@ -1057,7 +1063,7 @@ function QuestionsSection() {
   return (
     <section
       id="questions"
-      className="bg-[#023352] text-foreground pt-[100px] pb-[100px]"
+      className="bg-background text-foreground pt-[100px] pb-[100px]"
       aria-labelledby="questions-title"
     >
       <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
@@ -1075,19 +1081,31 @@ function QuestionsSection() {
                 <Check aria-hidden="true" size={28} strokeWidth={2} />
               </span>
               <h3 className="mt-4 font-sans text-xl font-medium sm:text-2xl leading-tight text-[#001826]">
-                Заявка отправлена
+                Спасибо, {submittedData?.name || "заявка принята"}!
               </h3>
               <p className="mt-2 text-base leading-[1.5] text-slate-600">
-                Мы перезвоним вам в ближайшее время.
+                Мы свяжемся с вами по номеру{" "}
+                <span className="font-semibold text-[#001826]">{submittedData?.phone}</span> в
+                ближайшее время.
               </p>
+              <div className="mt-4 rounded-[8px] bg-slate-50 p-3.5 border border-slate-100 w-full text-sm">
+                <p className="text-slate-500">
+                  <span className="font-medium text-slate-700">Имя:</span> {submittedData?.name}
+                </p>
+                <p className="mt-1 text-slate-500">
+                  <span className="font-medium text-slate-700">Номер телефона:</span>{" "}
+                  {submittedData?.phone}
+                </p>
+              </div>
               <button
                 type="button"
                 onClick={() => {
                   setSent(false);
+                  setSubmittedData(null);
                   setName("");
                   setPhone("");
                 }}
-                className="mt-4 text-sm font-medium text-[#023352] underline underline-offset-4 hover:opacity-80"
+                className="mt-5 text-sm font-medium text-[#023352] underline underline-offset-4 hover:opacity-80"
               >
                 Отправить ещё одну заявку
               </button>
@@ -1157,7 +1175,7 @@ function QuestionsSection() {
 function FooterSection() {
   return (
     <footer
-      className="overflow-hidden bg-[#023352] pt-[100px] text-white"
+      className="overflow-hidden bg-background pt-[100px] text-white"
       aria-label="Подвал сайта"
     >
       <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">

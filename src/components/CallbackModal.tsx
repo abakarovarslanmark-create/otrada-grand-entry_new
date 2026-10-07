@@ -19,6 +19,7 @@ export function CallbackButton({
   triggerRadius?: string;
 }) {
   const [sent, setSent] = useState(false);
+  const [submittedData, setSubmittedData] = useState<{ name: string; phone: string } | null>(null);
 
   return (
     <ExpandableScreen
@@ -26,7 +27,10 @@ export function CallbackButton({
       triggerRadius={triggerRadius}
       contentRadius="12px"
       onExpandChange={(expanded) => {
-        if (!expanded) setSent(false);
+        if (!expanded) {
+          setSent(false);
+          setSubmittedData(null);
+        }
       }}
     >
       <ExpandableScreenTrigger className={className.includes("w-full") ? "w-full" : undefined}>
@@ -39,26 +43,42 @@ export function CallbackButton({
         closeButtonClassName="text-[#001826] hover:bg-slate-100"
       >
         {sent ? (
-          <div className="mx-auto flex max-w-md flex-col items-center py-12 text-center">
+          <div className="mx-auto flex max-w-md flex-col items-center py-8 text-center">
             <span className="grid size-16 place-items-center rounded-full bg-brand/10 text-brand">
               <Check aria-hidden="true" size={32} strokeWidth={2} />
             </span>
             <h2 className="mt-5 font-display text-2xl sm:text-3xl leading-tight text-[#001826]">
-              Заявка отправлена
+              Спасибо, {submittedData?.name || "заявка принята"}!
             </h2>
             <p className="mt-2 text-base leading-[1.5] text-slate-600">
-              Мы перезвоним вам в ближайшее время.
+              Мы свяжемся с вами по номеру{" "}
+              <span className="font-semibold text-[#001826]">{submittedData?.phone}</span> в
+              ближайшее время.
             </p>
+            <div className="mt-4 rounded-[8px] bg-slate-50 p-3.5 border border-slate-100 w-full text-sm text-left">
+              <p className="text-slate-500">
+                <span className="font-medium text-slate-700">Имя:</span> {submittedData?.name}
+              </p>
+              <p className="mt-1 text-slate-500">
+                <span className="font-medium text-slate-700">Номер телефона:</span>{" "}
+                {submittedData?.phone}
+              </p>
+            </div>
           </div>
         ) : (
-          <CallbackForm onSent={() => setSent(true)} />
+          <CallbackForm
+            onSent={(data) => {
+              setSubmittedData(data);
+              setSent(true);
+            }}
+          />
         )}
       </ExpandableScreenContent>
     </ExpandableScreen>
   );
 }
 
-function CallbackForm({ onSent }: { onSent: () => void }) {
+function CallbackForm({ onSent }: { onSent: (data: { name: string; phone: string }) => void }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -82,17 +102,20 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
     setError(null);
     setLoading(true);
 
+    const formData = { name: name.trim(), phone: phone.trim() };
+
     try {
-      const response = await fetch("https://formsubmit.co/ajax/abakarovarslanmark@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/d7065831f87a32849ba1b1881938f2be", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
         body: JSON.stringify({
-          Имя: name.trim(),
-          Телефон: phone.trim(),
-          _subject: "Новая заявка с сайта ЖК «Отрада»",
+          "Имя клиента": formData.name,
+          "Номер телефона": formData.phone,
+          "Форма на сайте": "Модальное окно «Заказать звонок»",
+          _subject: `Новая заявка на звонок: ${formData.name} (${formData.phone})`,
           _template: "table",
           _captcha: "false",
         }),
@@ -102,11 +125,11 @@ function CallbackForm({ onSent }: { onSent: () => void }) {
         throw new Error("Не удалось отправить заявку");
       }
 
-      onSent();
+      onSent(formData);
     } catch (err) {
       console.error("Ошибка при отправке заявки:", err);
       // Если запрос заблокирован внешними плагинами браузера или офлайн, всё равно информируем пользователя
-      onSent();
+      onSent(formData);
     } finally {
       setLoading(false);
     }
