@@ -159,9 +159,9 @@ function Header() {
 
   return (
     <div
-      className={`fixed left-0 right-0 z-50 px-5 transition-all duration-300 ease-out sm:px-8 lg:px-12 ${
-        scrolled ? "top-3 sm:top-4" : "top-5 sm:top-8"
-      } ${visible || menuOpen ? "translate-y-0" : "-translate-y-[calc(100%+3rem)] pointer-events-none"}`}
+      className={`fixed top-4 sm:top-6 left-0 right-0 z-50 px-5 transition-transform duration-300 ease-out sm:px-8 lg:px-12 ${
+        visible || menuOpen ? "translate-y-0" : "-translate-y-[calc(100%+3rem)] pointer-events-none"
+      }`}
     >
       <header className="header-shell mx-auto flex h-[60px] xl:h-[75px] w-full max-w-[1300px] items-center rounded-[12px] px-[12px] sm:px-4 backdrop-blur-[25px]">
         <a
@@ -913,6 +913,32 @@ function ConstructionSection() {
 }
 
 function ContactsSection() {
+  const [loadMap, setLoadMap] = useState(false);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = mapContainerRef.current;
+    if (!el) return;
+
+    if (!("IntersectionObserver" in window)) {
+      setLoadMap(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setLoadMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       id="contacts"
@@ -929,16 +955,26 @@ function ContactsSection() {
 
         <div className="mt-[40px] flex flex-col items-start gap-[40px] xl:flex-row xl:items-start xl:gap-[50px]">
           {/* Яндекс.Карты */}
-          <div className="h-[360px] sm:h-[420px] w-full shrink-0 overflow-hidden rounded-[12px] border border-slate-100 bg-[#f8fafc] shadow-sm xl:h-[450px] xl:w-[600px] xl:max-w-[600px]">
-            <iframe
-              src="https://yandex.ru/map-widget/v1/?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A3%D0%BB%D1%8C%D1%8F%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A5%D0%B2%D0%B0%D1%82%D0%BA%D0%BE%D0%B2%D0%B0%2C%20%D0%B4%D0%BE%D0%BC%2028%D0%91&z=16"
-              width="100%"
-              height="100%"
-              frameBorder="0"
-              allowFullScreen
-              title="Яндекс.Карты — г. Ульяновск, ул. Хваткова, дом 28Б"
-              className="h-full w-full border-0"
-            />
+          <div
+            ref={mapContainerRef}
+            className="relative h-[360px] sm:h-[420px] w-full shrink-0 overflow-hidden rounded-[12px] border border-slate-100 bg-[#f8fafc] shadow-sm xl:h-[450px] xl:w-[600px] xl:max-w-[600px]"
+          >
+            {loadMap ? (
+              <iframe
+                src="https://yandex.ru/map-widget/v1/?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A3%D0%BB%D1%8C%D1%8F%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A5%D0%B2%D0%B0%D1%82%D0%BA%D0%BE%D0%B2%D0%B0%2C%20%D0%B4%D0%BE%D0%BC%2028%D0%91&z=16"
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                loading="lazy"
+                allowFullScreen
+                title="Яндекс.Карты — г. Ульяновск, ул. Хваткова, дом 28Б"
+                className="h-full w-full border-0"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-slate-50 text-slate-400">
+                <span className="text-sm font-medium">Загрузка карты...</span>
+              </div>
+            )}
           </div>
 
           {/* Текстовый блок с контактами */}
