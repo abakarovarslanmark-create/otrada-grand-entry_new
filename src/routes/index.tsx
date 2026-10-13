@@ -664,20 +664,20 @@ function ApartmentCardsGrid({
         <motion.article
           key={item.id}
           variants={layoutCardVariants}
-          className="flex w-full max-w-[440px] flex-col justify-between gap-[40px] rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-[440px]"
+          className="flex w-full max-w-[440px] flex-col justify-between gap-6 sm:gap-[40px] rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-[440px]"
         >
           {/* Элемент 1: заголовок h3 */}
           <h3 className="text-center font-sans text-2xl font-normal leading-tight text-[#001826] sm:text-[1.75rem]">
             {item.title}
           </h3>
 
-          {/* Элемент 2: фотография (высота 300) */}
-          <div className="flex h-[300px] w-full shrink-0 items-center justify-center overflow-hidden">
+          {/* Элемент 2: фотография (на мобилке ширина 100%, высота авто) */}
+          <div className="flex h-auto w-full shrink-0 items-center justify-center overflow-hidden sm:h-[300px]">
             {item.imageSrc ? (
               <img
                 src={item.imageSrc}
                 alt={`Планировка: ${item.title} ${item.totalArea} м²`}
-                className="h-full w-full object-contain"
+                className="h-auto w-full object-contain sm:h-full sm:w-full"
                 loading="lazy"
                 width={500}
                 height={300}
@@ -720,12 +720,12 @@ function ApartmentCardsGrid({
 }
 
 function LayoutsSection() {
-  const [activeTab, setActiveTab] = useState(3);
+  const [activeTab, setActiveTab] = useState(0);
   const currentLayout = layoutsData[activeTab] ?? layoutsData[0];
 
   return (
     <section id="layouts" className="bg-background text-foreground" aria-labelledby="layouts-title">
-      <div className="mx-auto w-full max-w-layouts px-3 pb-24 pt-[100px] sm:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-layouts px-3 pb-[60px] pt-[60px] sm:pb-24 sm:pt-[100px] sm:px-8 lg:px-12">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <h2
             id="layouts-title"
@@ -744,7 +744,7 @@ function LayoutsSection() {
           id="layouts-panel"
           role="tabpanel"
           aria-labelledby={`layouts-tab-${activeTab}`}
-          className="mt-10 flex min-h-[580px] w-full justify-center"
+          className="mt-6 sm:mt-10 flex w-full justify-center"
         >
           <AnimatePresence mode="wait">
             {activeTab === 1 ? (
@@ -760,20 +760,20 @@ function LayoutsSection() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="flex w-full max-w-[760px] flex-col gap-10 rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-[760px]"
+                className="flex w-full max-w-[557px] flex-col gap-6 sm:gap-8 rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-[557px]"
               >
                 <h3 className="text-center font-sans text-2xl font-medium leading-tight text-[#001826] sm:text-[1.75rem]">
                   {currentLayout.title}
                 </h3>
 
-                <div className="flex h-[300px] w-full shrink-0 items-center justify-center overflow-hidden">
+                <div className="flex h-auto sm:h-[300px] w-full shrink-0 items-center justify-center overflow-hidden">
                   {currentLayout.imageSrc ? (
                     <img
                       src={currentLayout.imageSrc}
                       alt={currentLayout.imageAlt}
-                      className="h-full w-full object-contain"
+                      className="h-auto w-full sm:h-[300px] sm:w-[517px] object-contain"
                       loading="lazy"
-                      width={760}
+                      width={517}
                       height={300}
                     />
                   ) : (
@@ -784,12 +784,48 @@ function LayoutsSection() {
                   )}
                 </div>
 
+                {/* Блок легенды типов квартир на этаже */}
+                <div className="mx-auto flex w-full max-w-[517px] flex-wrap items-center justify-center gap-x-[16px] gap-y-[10px]">
+                  <div className="flex w-auto items-center gap-[4px] shrink-0">
+                    <span
+                      className="size-[24px] shrink-0 rounded-[4px]"
+                      style={{ backgroundColor: "#E7CAB5" }}
+                      aria-hidden="true"
+                    />
+                    <span className="font-sans text-base font-normal text-[#001826]">
+                      3-комнатные квартира
+                    </span>
+                  </div>
+                  <div className="flex w-auto items-center gap-[4px] shrink-0">
+                    <span
+                      className="size-[24px] shrink-0 rounded-[4px]"
+                      style={{ backgroundColor: "#D6D09E" }}
+                      aria-hidden="true"
+                    />
+                    <span className="font-sans text-base font-normal text-[#001826]">
+                      2-комнатные квартира
+                    </span>
+                  </div>
+                  <div className="flex w-full justify-center">
+                    <div className="flex w-auto items-center gap-[4px] shrink-0">
+                      <span
+                        className="size-[24px] shrink-0 rounded-[4px]"
+                        style={{ backgroundColor: "#E5B087" }}
+                        aria-hidden="true"
+                      />
+                      <span className="font-sans text-base font-normal text-[#001826]">
+                        1-комнатная квартира
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
                 <CallbackButton
                   layoutId={`callback-layouts-${activeTab}`}
                   triggerRadius="4px"
                   className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-base font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
                 >
-                  Выбрать квартиру
+                  Узнать подробнее
                 </CallbackButton>
               </motion.article>
             )}
