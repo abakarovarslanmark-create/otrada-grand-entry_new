@@ -1,7 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import { type KeyboardEvent, useRef } from "react";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const indicatorSpring = {
@@ -68,7 +67,7 @@ export default function FluidTabs({
         const selected = activeIndex === index;
 
         return (
-          <Button
+          <button
             key={label}
             ref={(node) => {
               tabRefs.current[index] = node;
@@ -79,11 +78,10 @@ export default function FluidTabs({
             aria-controls="layouts-panel"
             id={`layouts-tab-${index}`}
             tabIndex={selected ? 0 : -1}
-            variant="ghost"
             onClick={() => onActiveIndexChange(index)}
             onKeyDown={(event) => handleKeyDown(event, index)}
             className={cn(
-              "relative z-10 h-[47px] min-w-0 w-full rounded-xl px-0 py-3 text-sm font-medium text-foreground hover:bg-transparent hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-layouts",
+              "relative z-10 h-[47px] min-w-0 w-full rounded-xl px-0 py-3 text-sm font-medium text-foreground hover:bg-transparent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-layouts inline-flex items-center justify-center cursor-pointer transition-colors",
             )}
           >
             <motion.span
@@ -95,7 +93,7 @@ export default function FluidTabs({
             >
               {label}
             </motion.span>
-          </Button>
+          </button>
         );
       })}
     </div>

@@ -215,6 +215,7 @@
   background: var(--brand);
   border-radius: 4px;
   color: var(--primary-foreground);
+  cursor: pointer;
   display: inline-flex;
   font-size: 0.9rem;
   font-weight: 500;

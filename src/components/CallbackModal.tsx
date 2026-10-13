@@ -33,8 +33,8 @@ export function CallbackButton({
         }
       }}
     >
-      <ExpandableScreenTrigger className={className.includes("w-full") ? "w-full" : undefined}>
-        <button className={className} type="button">
+      <ExpandableScreenTrigger>
+        <button className={`cursor-pointer ${className}`} type="button">
           {children || "Заказать звонок"}
         </button>
       </ExpandableScreenTrigger>

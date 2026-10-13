@@ -664,7 +664,7 @@ function ApartmentCardsGrid({
         <motion.article
           key={item.id}
           variants={layoutCardVariants}
-          className="flex w-full max-w-[440px] flex-col justify-between gap-[40px] rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-fit"
+          className="flex w-full max-w-[440px] flex-col justify-between gap-[40px] rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-[440px]"
         >
           {/* Элемент 1: заголовок h3 */}
           <h3 className="text-center font-sans text-2xl font-normal leading-tight text-[#001826] sm:text-[1.75rem]">
@@ -672,12 +672,12 @@ function ApartmentCardsGrid({
           </h3>
 
           {/* Элемент 2: фотография (высота 300) */}
-          <div className="flex h-[300px] w-full items-center justify-center overflow-hidden">
+          <div className="flex h-[300px] w-full shrink-0 items-center justify-center overflow-hidden">
             {item.imageSrc ? (
               <img
                 src={item.imageSrc}
                 alt={`Планировка: ${item.title} ${item.totalArea} м²`}
-                className="h-[300px] w-auto max-w-full object-contain"
+                className="h-full w-full object-contain"
                 loading="lazy"
                 width={500}
                 height={300}
@@ -744,7 +744,7 @@ function LayoutsSection() {
           id="layouts-panel"
           role="tabpanel"
           aria-labelledby={`layouts-tab-${activeTab}`}
-          className="mt-10 flex justify-center w-full"
+          className="mt-10 flex min-h-[580px] w-full justify-center"
         >
           <AnimatePresence mode="wait">
             {activeTab === 1 ? (
@@ -760,18 +760,18 @@ function LayoutsSection() {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="flex w-full max-w-[760px] flex-col gap-10 rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-fit"
+                className="flex w-full max-w-[760px] flex-col gap-10 rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-[760px]"
               >
                 <h3 className="text-center font-sans text-2xl font-medium leading-tight text-[#001826] sm:text-[1.75rem]">
                   {currentLayout.title}
                 </h3>
 
-                <div className="flex h-[300px] w-full items-center justify-center overflow-hidden">
+                <div className="flex h-[300px] w-full shrink-0 items-center justify-center overflow-hidden">
                   {currentLayout.imageSrc ? (
                     <img
                       src={currentLayout.imageSrc}
                       alt={currentLayout.imageAlt}
-                      className="h-[300px] w-auto max-w-full object-contain"
+                      className="h-full w-full object-contain"
                       loading="lazy"
                       width={760}
                       height={300}
@@ -993,7 +993,7 @@ function ContactsSection() {
               <p className="mt-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
                 <a
                   href="mailto:otrada.ul73@mail.ru"
-                  className="text-[#001826] transition-opacity hover:opacity-80"
+                  className="text-[#001826] underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
                 >
                   otrada.ul73@mail.ru
                 </a>
@@ -1029,7 +1029,10 @@ function ContactsSection() {
                 >
                   748-000
                 </a>
-                <a href="tel:+79053490363" className="transition-opacity hover:opacity-80">
+                <a
+                  href="tel:+79053490363"
+                  className="underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
+                >
                   +7 905 34 90 363
                 </a>
               </div>

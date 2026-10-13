@@ -1,7 +1,17 @@
 import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  cloneElement,
+  createContext,
+  isValidElement,
+  useContext,
+  useEffect,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
+import { cn } from "@/lib/utils";
 
 // Context
 interface ExpandableScreenContextValue {
@@ -97,11 +107,23 @@ export function ExpandableScreenTrigger({
 }: ExpandableScreenTriggerProps) {
   const { expand } = useExpandableScreen();
 
+  if (isValidElement(children)) {
+    const childElement = children as ReactElement<{
+      onClick?: (e: React.MouseEvent) => void;
+      className?: string;
+    }>;
+    return cloneElement(childElement, {
+      onClick: (e: React.MouseEvent) => {
+        childElement.props.onClick?.(e);
+        expand();
+      },
+      className: cn("cursor-pointer", childElement.props.className, className),
+    });
+  }
+
   return (
-    <div className={`relative inline-block ${className}`}>
-      <div onClick={expand} className="relative cursor-pointer">
-        {children}
-      </div>
+    <div onClick={expand} className={cn("inline-block cursor-pointer", className)}>
+      {children}
     </div>
   );
 }
