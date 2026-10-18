@@ -169,14 +169,14 @@ export function ExpandableScreenContent({
   if (!mounted || typeof document === "undefined") return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-[20px]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
       {/* Dimmed backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isExpanded ? 1 : 0 }}
         transition={{ duration: 0.2 }}
         onClick={collapse}
-        className="absolute inset-0 bg-ink/45"
+        className="absolute inset-0 bg-ink/45 cursor-pointer"
         aria-hidden="true"
       />
       {/* Modal Dialog */}
@@ -191,13 +191,13 @@ export function ExpandableScreenContent({
         style={{
           borderRadius: contentRadius,
         }}
-        className={`relative flex h-full w-full transform-gpu overflow-y-auto will-change-transform shadow-2xl ${className}`}
+        className={`relative z-10 flex transform-gpu will-change-transform shadow-2xl ${className}`}
       >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: isExpanded ? 1 : 0 }}
           transition={{ delay: isExpanded ? 0.15 : 0, duration: 0.4 }}
-          className="relative z-20 flex min-h-full w-full flex-col items-center justify-center"
+          className="relative z-20 flex w-full flex-col items-center justify-center"
         >
           {children}
         </motion.div>
@@ -207,7 +207,7 @@ export function ExpandableScreenContent({
             onClick={collapse}
             animate={{ opacity: isExpanded ? 1 : 0 }}
             transition={{ delay: isExpanded ? 0.15 : 0, duration: 0.2 }}
-            className={`absolute top-6 right-6 z-30 flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
+            className={`absolute top-3.5 right-3.5 z-30 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors ${
               closeButtonClassName ||
               "text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
             }`}

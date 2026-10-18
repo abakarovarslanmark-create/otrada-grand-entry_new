@@ -19,7 +19,7 @@
  */
 
 @theme inline {
-  --spacing: .2rem;
+  --spacing: 0.2rem;
   --breakpoint-xs: 30rem; /* 480px */
   --breakpoint-sm: 40rem; /* 640px */
   --breakpoint-md: 48rem; /* 768px */
@@ -82,7 +82,7 @@
 }
 
 :root {
-  --spacing: .2rem;
+  --spacing: 0.2rem;
   --radius: 0.5rem;
   --background: oklch(0.16 0.035 232);
   --foreground: oklch(0.98 0.005 230);
