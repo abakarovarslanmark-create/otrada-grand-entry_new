@@ -39,7 +39,7 @@ export function CallbackButton({
         </button>
       </ExpandableScreenTrigger>
       <ExpandableScreenContent
-        className="flex h-full! w-full! flex-col justify-center overflow-y-auto rounded-[12px] bg-white p-[12px] text-card-foreground shadow-2xl sm:p-6 md:p-8"
+        className="w-full max-w-[560px] max-h-[90vh] overflow-y-auto rounded-[12px] bg-white p-[12px] sm:p-6 text-[#001826] shadow-2xl"
         closeButtonClassName="text-[#001826] hover:bg-slate-100"
       >
         {sent ? (
@@ -136,12 +136,8 @@ function CallbackForm({ onSent }: { onSent: (data: { name: string; phone: string
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="m-auto flex w-full max-w-lg flex-col justify-center py-2 sm:py-4"
-      noValidate
-    >
-      <h2 className="font-display text-[clamp(1.75rem,4vw,2.5rem)] leading-tight text-center text-[#001826]">
+    <form onSubmit={handleSubmit} className="flex w-full flex-col justify-center" noValidate>
+      <h2 className="font-sans text-xl sm:text-2xl font-normal leading-tight text-center text-[#001826]">
         Заказать звонок
       </h2>
       <p className="mt-2 text-center text-base leading-[1.5] text-slate-600">

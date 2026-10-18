@@ -25,6 +25,7 @@ import constr2026_01 from "../assets/2026_01.webp";
 import constr2025_11 from "../assets/2025_11.webp";
 import constr2025_09 from "../assets/2025_09.webp";
 import constr2025_07 from "../assets/2025_07.webp";
+import constr2025_05 from "../assets/2025_05_11.jpg";
 import { CallbackButton } from "../components/CallbackModal";
 import { FloatingInput } from "../components/FloatingInput";
 import FluidTabs from "../components/FluidTabs";
@@ -845,6 +846,7 @@ const constructionItems = [
   { id: "nov-25", title: "Ноябрь 2025", imageSrc: constr2025_11 },
   { id: "sep-25", title: "Сентябрь 2025", imageSrc: constr2025_09 },
   { id: "jul-25", title: "Июль 2025", imageSrc: constr2025_07 },
+  { id: "may-25", title: "Май 2025", imageSrc: constr2025_05 },
 ];
 
 function ConstructionSection() {
@@ -1254,45 +1256,26 @@ function FooterSection() {
       aria-label="Подвал сайта"
     >
       <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Левая колонка — На сайте */}
-          <div className="flex flex-col items-start text-left">
-            <span className="font-sans text-sm font-normal text-white/50 sm:text-base">
-              На сайте
-            </span>
-            <nav className="mt-4 flex flex-col gap-2.5 font-sans text-base text-white sm:gap-3">
-              <a href="#about" className="transition-colors hover:text-white/80">
-                О проекте
-              </a>
-              <a href="#benefits" className="transition-colors hover:text-white/80">
-                Преимущества
-              </a>
-              <a href="#layouts" className="transition-colors hover:text-white/80">
-                Планировки
-              </a>
-              <a href="#construction" className="transition-colors hover:text-white/80">
-                Ход строительства
-              </a>
-              <a href="#contacts" className="transition-colors hover:text-white/80">
-                Контакты
-              </a>
-            </nav>
-          </div>
-
-          {/* Центральная колонка — Документы */}
-          <div className="flex flex-col items-start text-left">
-            <span className="font-sans text-sm font-normal text-white/50 sm:text-base">
-              Документы
-            </span>
-            <div className="mt-4 flex flex-col gap-2.5 font-sans text-base text-white sm:gap-3">
-              <a href="#" className="transition-colors hover:text-white/80">
-                Разрешение на строительство
-              </a>
-              <a href="#" className="transition-colors hover:text-white/80">
-                Разрешение на строительство
-              </a>
-            </div>
-          </div>
+        {/* Навигация — На сайте */}
+        <div className="flex flex-col items-start text-left">
+          <span className="font-sans text-sm font-normal text-white/50 sm:text-base">На сайте</span>
+          <nav className="mt-4 flex flex-col gap-2.5 font-sans text-base text-white sm:gap-3">
+            <a href="#about" className="transition-colors hover:text-white/80">
+              О проекте
+            </a>
+            <a href="#benefits" className="transition-colors hover:text-white/80">
+              Преимущества
+            </a>
+            <a href="#layouts" className="transition-colors hover:text-white/80">
+              Планировки
+            </a>
+            <a href="#construction" className="transition-colors hover:text-white/80">
+              Ход строительства
+            </a>
+            <a href="#contacts" className="transition-colors hover:text-white/80">
+              Контакты
+            </a>
+          </nav>
         </div>
 
         {/* Нижний логотип белого цвета внутри общего контейнера с отступами по бокам */}
