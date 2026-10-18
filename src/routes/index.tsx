@@ -25,7 +25,7 @@ import constr2026_01 from "../assets/2026_01.webp";
 import constr2025_11 from "../assets/2025_11.webp";
 import constr2025_09 from "../assets/2025_09.webp";
 import constr2025_07 from "../assets/2025_07.webp";
-import constr2025_05 from "../assets/2025_05_11.jpg";
+import constr2025_05 from "../assets/2025_05.webp";
 import { CallbackButton } from "../components/CallbackModal";
 import { FloatingInput } from "../components/FloatingInput";
 import FluidTabs from "../components/FluidTabs";
@@ -794,7 +794,7 @@ function LayoutsSection() {
                       aria-hidden="true"
                     />
                     <span className="font-sans text-base font-normal text-[#001826]">
-                      3-комнатные квартира
+                      3-комнатные квартиры
                     </span>
                   </div>
                   <div className="flex w-auto items-center gap-[4px] shrink-0">
@@ -804,7 +804,7 @@ function LayoutsSection() {
                       aria-hidden="true"
                     />
                     <span className="font-sans text-base font-normal text-[#001826]">
-                      2-комнатные квартира
+                      2-комнатные квартиры
                     </span>
                   </div>
                   <div className="flex w-full justify-center">

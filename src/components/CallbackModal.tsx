@@ -141,7 +141,7 @@ function CallbackForm({ onSent }: { onSent: (data: { name: string; phone: string
         Заказать звонок
       </h2>
       <p className="mt-2 text-center text-base leading-[1.5] text-slate-600">
-        Оставьте контакты — мы перезвоним вам и ответим на вопросы о квартирах.
+        Оставьте контакт — мы перезвоним вам и ответим на вопросы
       </p>
 
       <div className="mt-4 sm:mt-5 flex flex-col gap-3">
