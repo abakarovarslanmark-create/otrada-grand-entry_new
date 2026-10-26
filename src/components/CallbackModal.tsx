@@ -140,7 +140,7 @@ function CallbackForm({ onSent }: { onSent: (data: { name: string; phone: string
       <h2 className="font-sans text-xl sm:text-2xl font-normal leading-tight text-center text-[#001826]">
         Заказать звонок
       </h2>
-      <p className="mt-2 text-center text-base leading-[1.5] text-slate-600">
+      <p className="mt-2 text-center text-base leading-[1.5] lg:text-[18px] lg:leading-[1.7] text-slate-600">
         Оставьте контакт — мы перезвоним вам и ответим на вопросы
       </p>
 
@@ -177,7 +177,7 @@ function CallbackForm({ onSent }: { onSent: (data: { name: string; phone: string
       ) : null}
 
       <button
-        className="cta-solid mt-4 sm:mt-5 flex w-full items-center justify-center gap-2 rounded-[4px] py-3 text-base font-medium disabled:opacity-70 disabled:cursor-not-allowed"
+        className="cta-solid mt-4 sm:mt-5 flex w-full items-center justify-center gap-2 rounded-[4px] py-3 text-base lg:text-[18px] lg:leading-[1.7] font-medium disabled:opacity-70 disabled:cursor-not-allowed"
         type="submit"
         disabled={loading}
       >

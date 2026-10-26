@@ -105,26 +105,47 @@ export function ExpandableScreenTrigger({
   children,
   className = "",
 }: ExpandableScreenTriggerProps) {
-  const { expand } = useExpandableScreen();
+  const { isExpanded, expand, layoutId, triggerRadius } = useExpandableScreen();
 
   if (isValidElement(children)) {
     const childElement = children as ReactElement<{
       onClick?: (e: React.MouseEvent) => void;
       className?: string;
     }>;
-    return cloneElement(childElement, {
-      onClick: (e: React.MouseEvent) => {
-        childElement.props.onClick?.(e);
-        expand();
-      },
-      className: cn("cursor-pointer", childElement.props.className, className),
-    });
+    return (
+      <AnimatePresence initial={false}>
+        {!isExpanded && (
+          <motion.div
+            layoutId={layoutId}
+            style={{ borderRadius: triggerRadius }}
+            className={cn("inline-block relative", className)}
+          >
+            {cloneElement(childElement, {
+              onClick: (e: React.MouseEvent) => {
+                childElement.props.onClick?.(e);
+                expand();
+              },
+              className: cn("cursor-pointer", childElement.props.className),
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
   }
 
   return (
-    <div onClick={expand} className={cn("inline-block cursor-pointer", className)}>
-      {children}
-    </div>
+    <AnimatePresence initial={false}>
+      {!isExpanded && (
+        <motion.div
+          layoutId={layoutId}
+          style={{ borderRadius: triggerRadius }}
+          onClick={expand}
+          className={cn("inline-block cursor-pointer relative", className)}
+        >
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -145,18 +166,6 @@ export function ExpandableScreenContent({
   const { isExpanded, collapse, layoutId, contentRadius, animationDuration } =
     useExpandableScreen();
 
-  const exitMs = animationDuration * 1000 + 60;
-  const [mounted, setMounted] = useState(isExpanded);
-
-  useEffect(() => {
-    if (isExpanded) {
-      setMounted(true);
-      return;
-    }
-    const timer = setTimeout(() => setMounted(false), exitMs);
-    return () => clearTimeout(timer);
-  }, [isExpanded, exitMs]);
-
   useEffect(() => {
     if (!isExpanded) return;
     const onKeyDown = (event: KeyboardEvent) => {
@@ -166,58 +175,63 @@ export function ExpandableScreenContent({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isExpanded, collapse]);
 
-  if (!mounted || typeof document === "undefined") return null;
+  if (typeof document === "undefined") return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-      {/* Dimmed backdrop */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isExpanded ? 1 : 0 }}
-        transition={{ duration: 0.2 }}
-        onClick={collapse}
-        className="absolute inset-0 bg-ink/45 cursor-pointer"
-        aria-hidden="true"
-      />
-      {/* Modal Dialog */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 16 }}
-        animate={{
-          opacity: isExpanded ? 1 : 0,
-          scale: isExpanded ? 1 : 0.95,
-          y: isExpanded ? 0 : 16,
-        }}
-        transition={{ duration: animationDuration, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          borderRadius: contentRadius,
-        }}
-        className={`relative z-10 flex transform-gpu will-change-transform shadow-2xl ${className}`}
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isExpanded ? 1 : 0 }}
-          transition={{ delay: isExpanded ? 0.15 : 0, duration: 0.4 }}
-          className="relative z-20 flex w-full flex-col items-center justify-center"
-        >
-          {children}
-        </motion.div>
-
-        {showCloseButton && (
-          <motion.button
+    <AnimatePresence initial={false}>
+      {isExpanded && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+          {/* Dimmed backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: animationDuration }}
             onClick={collapse}
-            animate={{ opacity: isExpanded ? 1 : 0 }}
-            transition={{ delay: isExpanded ? 0.15 : 0, duration: 0.2 }}
-            className={`absolute top-3.5 right-3.5 z-30 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors ${
-              closeButtonClassName ||
-              "text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
-            }`}
-            aria-label="Закрыть"
+            className="absolute inset-0 bg-ink/45 backdrop-blur-xs cursor-pointer"
+            aria-hidden="true"
+          />
+          {/* Morphing Modal Dialog */}
+          <motion.div
+            layoutId={layoutId}
+            transition={{ duration: animationDuration }}
+            style={{
+              borderRadius: contentRadius,
+            }}
+            layout
+            className={cn("relative z-10 flex transform-gpu will-change-transform", className)}
           >
-            <X className="h-5 w-5" />
-          </motion.button>
-        )}
-      </motion.div>
-    </div>,
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: animationDuration * 0.4, duration: 0.2 }}
+              className="relative z-20 flex w-full flex-col items-center justify-center"
+            >
+              {children}
+            </motion.div>
+
+            {showCloseButton && (
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: animationDuration * 0.5, duration: 0.15 }}
+                onClick={collapse}
+                className={cn(
+                  "absolute top-3.5 right-3.5 z-30 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors",
+                  closeButtonClassName ||
+                    "text-primary-foreground hover:bg-primary-foreground/10 bg-transparent",
+                )}
+                aria-label="Закрыть"
+              >
+                <X className="h-5 w-5" />
+              </motion.button>
+            )}
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>,
     document.body,
   );
 }

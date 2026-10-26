@@ -1,14 +1,7 @@
-import { motion, useReducedMotion } from "motion/react";
-import { type KeyboardEvent, useRef } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
-
-const indicatorSpring = {
-  type: "spring" as const,
-  stiffness: 380,
-  damping: 34,
-  mass: 0.75,
-};
 
 type FluidTabsProps = {
   labels: readonly string[];
@@ -23,12 +16,35 @@ export default function FluidTabs({
   onActiveIndexChange,
   className,
 }: FluidTabsProps) {
+  const [touchedTab, setTouchedTab] = useState<number | null>(null);
+  const [prevActiveIndex, setPrevActiveIndex] = useState(activeIndex);
+  const timeoutRef = useRef<number | null>(null);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  const selectTab = (index: number) => {
+    setPrevActiveIndex(activeIndex);
+    onActiveIndexChange(index);
+    setTouchedTab(index);
+
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = window.setTimeout(() => {
+      setTouchedTab(null);
+    }, 300);
+  };
 
   const moveFocus = (index: number) => {
     const target = (index + labels.length) % labels.length;
-    onActiveIndexChange(target);
+    selectTab(target);
     tabRefs.current[target]?.focus();
   };
 
@@ -48,6 +64,13 @@ export default function FluidTabs({
     }
   };
 
+  const getTabDirection = (index: number) => {
+    if (index === activeIndex && prevActiveIndex !== activeIndex) {
+      return index > prevActiveIndex ? 1 : -1;
+    }
+    return 0;
+  };
+
   return (
     <div
       role="tablist"
@@ -57,14 +80,9 @@ export default function FluidTabs({
         className,
       )}
     >
-      <motion.span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-2 left-2 w-[calc((100%-16px)/4)] rounded-xl bg-card"
-        animate={{ x: `${activeIndex * 100}%` }}
-        transition={reduceMotion ? { duration: 0 } : indicatorSpring}
-      />
       {labels.map((label, index) => {
         const selected = activeIndex === index;
+        const direction = getTabDirection(index);
 
         return (
           <button
@@ -78,18 +96,35 @@ export default function FluidTabs({
             aria-controls="layouts-panel"
             id={`layouts-tab-${index}`}
             tabIndex={selected ? 0 : -1}
-            onClick={() => onActiveIndexChange(index)}
+            onClick={() => selectTab(index)}
             onKeyDown={(event) => handleKeyDown(event, index)}
             className={cn(
               "relative z-10 h-[47px] min-w-0 w-full rounded-xl px-0 py-3 text-sm font-medium text-foreground hover:bg-transparent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground focus-visible:ring-offset-2 focus-visible:ring-offset-layouts inline-flex items-center justify-center cursor-pointer transition-colors",
+              touchedTab === index && "blur-[0.5px]",
             )}
           >
+            {selected ? (
+              <motion.span
+                layoutId="fluid-tabs-active-pill"
+                className="pointer-events-none absolute inset-0 rounded-xl bg-card"
+                transition={{
+                  type: "spring",
+                  stiffness: 360,
+                  damping: 28,
+                }}
+              />
+            ) : null}
             <motion.span
-              className={cn("relative z-10 whitespace-nowrap", selected && "text-ink")}
-              animate={{ scale: selected ? 1 : 0.98 }}
-              transition={
-                reduceMotion ? { duration: 0 } : { duration: 0.28, ease: [0.32, 0.72, 0, 1] }
-              }
+              initial={false}
+              animate={{
+                scale: selected ? 1 : 0.96,
+                x: selected && direction !== 0 ? [direction * 4, 0] : 0,
+              }}
+              transition={{ duration: 0.25 }}
+              className={cn(
+                "relative z-10 whitespace-nowrap transition-colors duration-200",
+                selected && "text-ink font-medium",
+              )}
             >
               {label}
             </motion.span>

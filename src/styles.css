@@ -170,8 +170,14 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
     letter-spacing: 0;
     margin: 0;
+    @media (min-width: 1024px) {
+      font-size: 18px;
+      line-height: 170%;
+    }
   }
 }
 
@@ -206,7 +212,8 @@
     outline-offset: 5px;
   }
   @media (min-width: 1024px) {
-    font-size: 1.125rem;
+    font-size: 18px;
+    line-height: 170%;
   }
 }
 
@@ -234,7 +241,8 @@
     outline-offset: 3px;
   }
   @media (min-width: 1024px) {
-    font-size: 1.125rem;
+    font-size: 18px;
+    line-height: 170%;
   }
 }
 
@@ -242,7 +250,8 @@
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   @media (min-width: 1024px) {
-    font-size: 1.125rem;
+    font-size: 18px;
+    line-height: 170%;
   }
 }
 
@@ -268,6 +277,10 @@
     outline: 2px solid var(--foreground);
     outline-offset: 3px;
   }
+  @media (min-width: 1024px) {
+    font-size: 18px;
+    line-height: 170%;
+  }
 }
 
 @utility hero-text-shadow {
@@ -277,44 +290,43 @@
 }
 
 @utility hero-enter {
-  opacity: 0;
-  animation: hero-enter 1400ms forwards cubic-bezier(0.16, 1, 0.3, 1);
+  animation: hero-enter 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @utility hero-header-enter {
-  animation: hero-header-enter 700ms both cubic-bezier(0.22, 1, 0.36, 1);
+  animation: hero-header-enter 750ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @utility hero-delay-1 {
-  animation-delay: 150ms;
+  animation-delay: 80ms;
 }
 @utility hero-delay-2 {
-  animation-delay: 225ms;
+  animation-delay: 200ms;
 }
 @utility hero-delay-3 {
-  animation-delay: 300ms;
+  animation-delay: 320ms;
 }
 @utility hero-delay-4 {
-  animation-delay: 450ms;
+  animation-delay: 440ms;
 }
 
 @keyframes hero-enter {
   from {
     opacity: 0;
-    filter: blur(12px);
-    transform: translateY(40px) scale(0.98);
+    transform: translateY(18px);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
     filter: blur(0);
-    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes hero-header-enter {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
@@ -324,10 +336,10 @@
 
 @utility reveal-up {
   opacity: 0;
-  transform: translateY(72px);
+  transform: translateY(28px);
   transition:
-    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 750ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 750ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @utility reveal-up-in {
@@ -358,6 +370,11 @@
     filter: none;
     opacity: 1;
     transform: none;
+  }
+  .reveal-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
   *,
   *::before,
