@@ -11,7 +11,8 @@ export default defineConfig({
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
-    pages: [{ path: "/" }],
-    prerender: { enabled: true, autoStaticPathsDiscovery: false },
+    // Nitro node-server has no `fetch` handler; TanStack prerender calls
+    // vite preview → dist/server/server.js and always fails.
+    prerender: { enabled: false },
   },
 });

@@ -314,11 +314,10 @@ function Index() {
                 id="hero-title"
                 className="hero-enter hero-delay-1 hero-text-shadow whitespace-nowrap font-display text-[clamp(2rem,7vw,6rem)] leading-[0.98] text-foreground"
               >
-                Жизнь - это Отрада
+                Жизнь в центре без компромиссов
               </h1>
               <p className="hero-enter hero-delay-2 hero-text-shadow mt-6 max-w-none text-[clamp(1rem,2.8vw,1.75rem)] leading-relaxed text-foreground/90 sm:whitespace-nowrap">
-                Ваша новая квартира в самом центре <br className="sm:hidden" />
-                Ульяновска
+                Ваша новая квартира в самом центре Ульяновска
               </p>
               <div className="hero-enter hero-delay-4 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <a
@@ -400,7 +399,7 @@ function AboutSection() {
       <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <h2
           id="about-title"
-          className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-[#001826]"
+          className="heading-2 text-[#001826]"
         >
           О проекте
         </h2>
@@ -424,13 +423,13 @@ function AboutSection() {
           {/* Текстовый блок: параграф + в 40px табличка спецификаций */}
           <div className="flex w-full flex-1 flex-col">
             <p className="font-sans text-base leading-[1.6] text-[#001826] sm:text-lg">
-              «Отрада» — девятиэтажный дом в тихой части исторического центра Ульяновска, на улице
-              Мира. Камерный формат проекта принципиально отличается от плотных многоэтажных
-              массивов: здесь мало соседей, чистая придомовая территория с детской площадкой и
-              собственная закрытая автостоянка. Архитектура дома сочетает прочный
-              монолитно-кирпичный конструктив, индивидуальное отопление и гибкие свободные
-              планировки. Это пространство, где динамика центрального района естественно соединяется
-              с приватностью, тишиной и полным бытовым комфортом
+            «Дом на улице Мира» — девятиэтажный дом в тихой части исторического центра Ульяновска.
+            Камерный формат проекта принципиально отличается от плотных многоэтажных массивов: 
+            всего 40 квартир, для тех — кто ценит комфорт и статус, чистая придомовая территория
+            с детской площадкой и собственная закрытая автостоянка. Архитектура дома сочетает
+            прочный монолитно-кирпичный конструктив, индивидуальное отопление и идеально продуманные 
+            планировки. Это пространство, где динамика центрального района естественно соединяется с 
+            приватностью, тишиной и полным бытовым комфортом
             </p>
 
             <motion.div
@@ -462,12 +461,12 @@ const benefitsData = [
   {
     title: "Монолитный каркас",
     image: monolithicFrameAsset,
-    text: "Монолитный железобетонный каркас обеспечивает зданию исключительную прочность и точную геометрию. Конструкция дает минимальную и плавную усадку, благодаря чему дизайнерский ремонт, дорогая штукатурка и широкоформатная плитка сохраняют идеальный вид без трещин и деформаций годами. Отсутствие внутренних несущих перегородок оставляет полную свободу в зонировании.",
+    text: "В основе нашего дома монолитный железобетонный каркас, дополненный кладкой из силикатных блоков. Монолитный железобетонный каркас обеспечивает зданию исключительную прочность, точную геометрию, минимальную и плавную усадку. Силикатные блоки, в свою очередь, гарантируют хороший потенциал звукоизоляци, прочность и устойчивость кладки, ровную повернхность и удобство отделки",
   },
   {
     title: "Поквартирное отопление",
     image: heatingAsset,
-    text: "Индивидуальный котел в квартире дает полную независимость от городского графика. Когда на улице сырая осень или холодный май, комфортный микроклимат настраивается за пару секунд, без ожидания начала отопительного сезона. Система работает строго по фактической потребности: тепло не расходуется впустую во время отъезда, а счета в квитанциях формируются по реальному счетчику, выходя ощутимо ниже общегородских тарифов.",
+    text: "Комфортный микроклимат вашей квартиры настраивается за пару секунд, без ожидания начала отопительного сезона. Система работает строго по фактической потребности: тепло не расходуется впустую во время отъезда, а счета в квитанциях формируются по реальному счетчику, выходя ощутимо ниже общегородских тарифов.",
   },
   {
     title: "Парковка",
@@ -496,7 +495,7 @@ function BenefitsSection() {
       <div className="mx-auto w-full max-w-layouts px-3 pb-24 pt-[100px] sm:px-8 lg:px-12">
         <h2
           id="benefits-title"
-          className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-white"
+          className="heading-2 text-white"
         >
           Преимущества
         </h2>
@@ -519,7 +518,7 @@ function BenefitsSection() {
                   />
                 </div>
                 <div className="flex flex-1 flex-col justify-start">
-                  <h3 className="font-sans text-[1.375rem] font-medium leading-tight text-[#001826] sm:text-[1.625rem] lg:text-[1.875rem]">
+                  <h3 className="heading-3 text-[#001826]">
                     {item.title}
                   </h3>
                   <p className="mt-[8px] sm:mt-3 whitespace-pre-line text-base leading-[1.6] text-card-foreground/85">
@@ -545,7 +544,7 @@ interface LayoutCardItem {
 
 const layoutsData: Record<number, LayoutCardItem> = {
   0: {
-    title: "Этаж",
+    title: "2 - 7 этажи",
     imageSrc: floorLayoutAsset,
     imageAlt: "Схема планировки этажа жилого дома «Отрада»",
   },
@@ -668,7 +667,7 @@ function ApartmentCardsGrid({
           className="flex w-full max-w-[440px] flex-col justify-between gap-6 sm:gap-[40px] rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-[440px]"
         >
           {/* Элемент 1: заголовок h3 */}
-          <h3 className="text-center font-sans text-2xl font-normal leading-tight text-[#001826] sm:text-[1.75rem]">
+          <h3 className="heading-3 text-center text-[#001826]">
             {item.title}
           </h3>
 
@@ -730,7 +729,7 @@ function LayoutsSection() {
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <h2
             id="layouts-title"
-            className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight"
+            className="heading-2"
           >
             Планировки
           </h2>
@@ -763,7 +762,7 @@ function LayoutsSection() {
                 exit="exit"
                 className="flex w-full max-w-[557px] flex-col gap-6 sm:gap-8 rounded-[12px] bg-white p-[12px] sm:p-[20px] shadow-lg sm:w-[557px]"
               >
-                <h3 className="text-center font-sans text-2xl font-medium leading-tight text-[#001826] sm:text-[1.75rem]">
+                <h3 className="heading-3 text-center text-[#001826]">
                   {currentLayout.title}
                 </h3>
 
@@ -887,7 +886,7 @@ function ConstructionSection() {
       <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <h2
           id="construction-title"
-          className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-[#001826]"
+          className="heading-2 text-[#001826]"
         >
           Ход строительства
         </h2>
@@ -986,7 +985,7 @@ function ContactsSection() {
       <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <h2
           id="contacts-title"
-          className="font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-[#001826]"
+          className="heading-2 text-[#001826]"
         >
           Наши контакты
         </h2>
@@ -999,13 +998,11 @@ function ContactsSection() {
           >
             {loadMap ? (
               <iframe
-                src="https://yandex.ru/map-widget/v1/?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A3%D0%BB%D1%8C%D1%8F%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A5%D0%B2%D0%B0%D1%82%D0%BA%D0%BE%D0%B2%D0%B0%2C%20%D0%B4%D0%BE%D0%BC%2028%D0%91&z=16"
+                src="https://yandex.ru/map-widget/v1/?text=%D0%B3%D0%BE%D1%80%D0%BE%D0%B4%20%D0%A3%D0%BB%D1%8C%D1%8F%D0%BD%D0%BE%D0%B2%D1%81%D0%BA%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%A5%D0%B2%D0%B0%D1%82%D0%BA%D0%BE%D0%B2%D0%B0%2C%20%D0%B4%D0%BE%D0%BC%2028%D0%92&z=16"
                 width="100%"
                 height="100%"
-                frameBorder="0"
                 loading="lazy"
-                allowFullScreen
-                title="Яндекс.Карты — г. Ульяновск, ул. Хваткова, дом 28Б"
+                title="Яндекс.Карты — г. Ульяновск, ул. Хваткова, дом 28В"
                 className="h-full w-full border-0"
               />
             ) : (
@@ -1020,7 +1017,7 @@ function ContactsSection() {
             <div className="text-left">
               <span className="block text-sm text-[#001826]/50 sm:text-base">Адрес</span>
               <p className="mt-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
-                г. Ульяновск, ул. Хваткова, дом, 28В, офис 208
+                г. Ульяновск, ул. Хваткова, дом 28В
               </p>
             </div>
 
@@ -1039,24 +1036,6 @@ function ContactsSection() {
             </div>
 
             <div className="text-left">
-              <span className="block text-sm text-[#001826]/50 sm:text-base">Номер приемной</span>
-              <div className="mt-1 flex flex-col items-start gap-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
-                <a
-                  href="tel:+78422584406"
-                  className="underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
-                >
-                  8 8422 58-44-06
-                </a>
-                <a
-                  href="tel:+78422584407"
-                  className="underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
-                >
-                  8 8422 58-44-07
-                </a>
-              </div>
-            </div>
-
-            <div className="text-left">
               <span className="block text-sm text-[#001826]/50 sm:text-base">
                 Номер отдела продаж
               </span>
@@ -1065,13 +1044,13 @@ function ContactsSection() {
                   href="tel:+78422748000"
                   className="underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
                 >
-                  748-000
+                  73-03-63(уточнить полный номер)
                 </a>
                 <a
-                  href="tel:+79053490363"
+                  href="tel:+78422748000"
                   className="underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
                 >
-                  +7 905 34 90 363
+                  74-80-00
                 </a>
               </div>
             </div>
@@ -1146,18 +1125,18 @@ function QuestionsSection() {
       <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         <h2
           id="questions-title"
-          className="text-left font-display text-[clamp(2.125rem,5.5vw,2.875rem)] leading-tight text-white"
+          className="text-left heading-2 text-white"
         >
           Остались вопросы?
         </h2>
 
-        <div className="mt-6 sm:mt-8 mx-auto w-full max-w-full sm:max-w-[560px] rounded-[12px] bg-white p-[12px] sm:p-6 shadow-2xl text-[#001826]">
+        <div className="mt-[40px] mx-auto w-full max-w-full sm:max-w-[560px] rounded-[12px] bg-white p-[12px] sm:p-6 shadow-2xl text-[#001826]">
           {sent ? (
             <div className="flex flex-col items-start py-6 text-left">
               <span className="grid size-14 place-items-center rounded-full bg-brand/10 text-brand">
                 <Check aria-hidden="true" size={28} strokeWidth={2} />
               </span>
-              <h3 className="mt-4 font-sans text-xl font-medium sm:text-2xl leading-tight text-[#001826]">
+              <h3 className="heading-3 mt-4 text-[#001826]">
                 Спасибо, {submittedData?.name || "заявка принята"}!
               </h3>
               <p className="mt-2 text-base leading-[1.5] text-slate-600">
@@ -1189,7 +1168,7 @@ function QuestionsSection() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="flex flex-col text-left">
-              <h3 className="text-center font-sans text-xl font-normal leading-tight text-[#001826] sm:text-2xl">
+              <h3 className="heading-3 text-center text-[#001826]">
                 Мы на всё ответим
               </h3>
 

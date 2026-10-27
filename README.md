@@ -42,11 +42,11 @@ Detected typefaces: **WebRecklessNeue**, **WebHaffer**
 
 |---|---|---|---|---|---|
 
-| h1 | Zen Old Mincho | 77px | 400 | 1 | -1.5px |
+| h1 | Oranienbaum | 77px | 400 | 1 | -1.5px |
 
-| h2 | Zen Old Mincho| 46px | 400 | 1.15 | 0 |
+| h2 | Oranienbaum| 74px | 400 | 1.15 | 0 |
 
-| h3 | Geist| 32px | 400 | 1.25 | 0 |
+| h3 | Oranienbaum| 32px | 400 | 1.25 | 0 |
 
 | body | Geist| 18px | 400 | 1.45 | 0 |
 
