@@ -2,16 +2,6 @@
 
 Make a hero block for the website of the business card of the construction company "Otrada" on next.js since seo optimization is important to me, the result should be like in the photo, use the photo of the house in the hero block that I will send you.
 
-# Climeworks design system
-
-- **Source:** https://climeworks.com
-
-- **Captured:** 2026-05-18
-
-- **Mode:** dark
-
-- **Macrostructure:** Marquee Hero
-
 ## Tone
 
 The hero image dominates, establishing a sense of scale and the environment. The typography is clean and spacious, prioritizing clarity and a sense of scientific precision. The overall feel is understated and authoritative. · climate tech hero, carbon capture website, environmental design, clean energy branding, scientific website, minimalist tech, dark hero image
