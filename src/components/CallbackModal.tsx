@@ -47,15 +47,15 @@ export function CallbackButton({
             <span className="grid size-16 place-items-center rounded-full bg-brand/10 text-brand">
               <Check aria-hidden="true" size={32} strokeWidth={2} />
             </span>
-            <h2 className="mt-5 font-display text-2xl sm:text-3xl leading-tight text-[#001826]">
+            <h3 className="heading-3 mt-5 text-[#001826]">
               Спасибо, {submittedData?.name || "заявка принята"}!
-            </h2>
-            <p className="mt-2 text-base leading-[1.5] text-slate-600">
+            </h3>
+            <p className="mt-2 text-main text-slate-600">
               Мы свяжемся с вами по номеру{" "}
               <span className="font-semibold text-[#001826]">{submittedData?.phone}</span> в
               ближайшее время.
             </p>
-            <div className="mt-4 rounded-[8px] bg-slate-50 p-3.5 border border-slate-100 w-full text-sm text-left">
+            <div className="mt-4 rounded-[8px] bg-slate-50 p-3.5 border border-slate-100 w-full text-small text-left">
               <p className="text-slate-500">
                 <span className="font-medium text-slate-700">Имя:</span> {submittedData?.name}
               </p>
@@ -137,10 +137,10 @@ function CallbackForm({ onSent }: { onSent: (data: { name: string; phone: string
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full flex-col justify-center" noValidate>
-      <h2 className="font-sans text-xl sm:text-2xl font-normal leading-tight text-center text-[#001826]">
+      <h3 className="heading-3 text-center text-[#001826]">
         Заказать звонок
-      </h2>
-      <p className="mt-2 text-center text-base leading-[1.5] lg:text-[18px] lg:leading-[1.7] text-slate-600">
+      </h3>
+      <p className="mt-2 text-center text-main text-slate-600">
         Оставьте контакт — мы перезвоним вам и ответим на вопросы
       </p>
 
@@ -171,13 +171,13 @@ function CallbackForm({ onSent }: { onSent: (data: { name: string; phone: string
       </div>
 
       {error ? (
-        <p className="mt-2.5 text-sm text-destructive text-center" role="alert">
+        <p className="mt-2.5 text-small text-destructive text-center" role="alert">
           {error}
         </p>
       ) : null}
 
       <button
-        className="cta-solid mt-4 sm:mt-5 flex w-full items-center justify-center gap-2 rounded-[4px] py-3 text-base lg:text-[18px] lg:leading-[1.7] font-medium disabled:opacity-70 disabled:cursor-not-allowed"
+        className="cta-solid mt-4 sm:mt-5 flex w-full items-center justify-center gap-2 rounded-[4px] py-3 text-main font-medium disabled:opacity-70 disabled:cursor-not-allowed"
         type="submit"
         disabled={loading}
       >
@@ -190,7 +190,7 @@ function CallbackForm({ onSent }: { onSent: (data: { name: string; phone: string
           "Отправить"
         )}
       </button>
-      <p className="mt-2.5 text-center text-xs leading-[1.5] text-slate-500">
+      <p className="mt-2.5 text-center text-small text-slate-500">
         Нажимая кнопку, вы соглашаетесь на обработку персональных данных
       </p>
     </form>
