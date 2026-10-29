@@ -312,11 +312,11 @@ function Index() {
             <div className="w-full max-w-5xl">
               <h1
                 id="hero-title"
-                className="hero-enter hero-delay-1 hero-text-shadow whitespace-nowrap font-display text-[clamp(2rem,7vw,6rem)] leading-[0.98] text-foreground"
+                className="heading-1 hero-enter hero-delay-1 hero-text-shadow xl:whitespace-nowrap text-foreground"
               >
-                Жизнь в центре без компромиссов
+                Жизнь в центре <span className="whitespace-nowrap">без&nbsp;компромиссов</span>
               </h1>
-              <p className="hero-enter hero-delay-2 hero-text-shadow mt-6 max-w-none text-[clamp(1rem,2.8vw,1.75rem)] leading-relaxed text-foreground/90 sm:whitespace-nowrap">
+              <p className="text-subt hero-enter hero-delay-2 hero-text-shadow mt-6 max-w-none text-foreground/90 sm:whitespace-nowrap">
                 Ваша новая квартира в самом центре Ульяновска
               </p>
               <div className="hero-enter hero-delay-4 mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -422,7 +422,7 @@ function AboutSection() {
 
           {/* Текстовый блок: параграф + в 40px табличка спецификаций */}
           <div className="flex w-full flex-1 flex-col">
-            <p className="font-sans text-base leading-[1.6] text-[#001826] sm:text-lg">
+            <p className="text-main text-[#001826]">
             «Дом на улице Мира» — девятиэтажный дом в тихой части исторического центра Ульяновска.
             Камерный формат проекта принципиально отличается от плотных многоэтажных массивов: 
             всего 40 квартир, для тех — кто ценит комфорт и статус, чистая придомовая территория
@@ -443,7 +443,7 @@ function AboutSection() {
                 <motion.div
                   key={index}
                   variants={specRowVariants}
-                  className="grid grid-cols-1 border-b border-[#001826]/30 py-3.5 text-base sm:grid-cols-2 sm:text-lg lg:text-[18px] lg:leading-[1.7]"
+                  className="grid grid-cols-1 border-b border-[#001826]/30 py-3.5 text-main sm:grid-cols-2"
                 >
                   <span className="text-[#001826]/50">{spec.label}</span>
                   <span className="font-normal text-[#001826]">{spec.value}</span>
@@ -521,7 +521,7 @@ function BenefitsSection() {
                   <h3 className="heading-3 text-[#001826]">
                     {item.title}
                   </h3>
-                  <p className="mt-[8px] sm:mt-3 whitespace-pre-line text-base leading-[1.6] lg:text-[18px] lg:leading-[1.7] text-card-foreground/85">
+                  <p className="mt-[8px] sm:mt-3 whitespace-pre-line text-main text-card-foreground/85">
                     {item.text}
                   </p>
                 </div>
@@ -696,7 +696,7 @@ function ApartmentCardsGrid({
 
           {/* Элемент 3: текст с кнопкой */}
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col items-center gap-1.5 text-center text-base lg:text-[18px] lg:leading-[1.7] text-[#001826]">
+            <div className="flex flex-col items-center gap-1.5 text-center text-main text-[#001826]">
               <p>
                 <span className="font-bold">{item.totalArea}</span> — площадь всей квартиры
               </p>
@@ -708,7 +708,7 @@ function ApartmentCardsGrid({
             <CallbackButton
               layoutId={`callback-${tabKey}-${index}`}
               triggerRadius="4px"
-              className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-base lg:text-[18px] lg:leading-[1.7] font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
+              className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-main font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
             >
               Узнать подробнее
             </CallbackButton>
@@ -792,7 +792,7 @@ function LayoutsSection() {
                       style={{ backgroundColor: "#E7CAB5" }}
                       aria-hidden="true"
                     />
-                    <span className="font-sans text-base lg:text-[18px] lg:leading-[1.7] font-normal text-[#001826]">
+                    <span className="text-main font-normal text-[#001826]">
                       3-комнатные квартиры
                     </span>
                   </div>
@@ -802,7 +802,7 @@ function LayoutsSection() {
                       style={{ backgroundColor: "#D6D09E" }}
                       aria-hidden="true"
                     />
-                    <span className="font-sans text-base lg:text-[18px] lg:leading-[1.7] font-normal text-[#001826]">
+                    <span className="text-main font-normal text-[#001826]">
                       2-комнатные квартиры
                     </span>
                   </div>
@@ -813,7 +813,7 @@ function LayoutsSection() {
                         style={{ backgroundColor: "#E5B087" }}
                         aria-hidden="true"
                       />
-                      <span className="font-sans text-base lg:text-[18px] lg:leading-[1.7] font-normal text-[#001826]">
+                      <span className="text-main font-normal text-[#001826]">
                         1-комнатная квартира
                       </span>
                     </div>
@@ -823,7 +823,7 @@ function LayoutsSection() {
                 <CallbackButton
                   layoutId={`callback-layouts-${activeTab}`}
                   triggerRadius="4px"
-                  className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-base lg:text-[18px] lg:leading-[1.7] font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
+                  className="flex h-[52px] w-full cursor-pointer items-center justify-center rounded-[4px] border border-[#023352] text-main font-medium text-[#023352] transition-colors duration-200 hover:bg-[#023352] hover:text-white"
                 >
                   Узнать подробнее
                 </CallbackButton>
@@ -918,7 +918,7 @@ function ConstructionSection() {
                 </div>
               )}
             </div>
-            <p className="mt-[10px] text-center font-sans text-base lg:text-[18px] lg:leading-[1.7] font-normal text-[#001826]">
+            <p className="mt-[10px] text-center text-main font-normal text-[#001826]">
               {item.title}
             </p>
           </article>
@@ -1015,17 +1015,17 @@ function ContactsSection() {
           {/* Текстовый блок с контактами */}
           <div className="flex w-full flex-1 flex-col items-start justify-center gap-6 text-left">
             <div className="text-left">
-              <span className="block text-sm text-[#001826]/50 sm:text-base">Адрес</span>
-              <p className="mt-1 font-sans text-base font-normal text-[#001826] sm:text-lg">
+              <span className="block text-main text-[#001826]/50">Адрес</span>
+              <p className="mt-1 text-main font-normal text-[#001826]">
                 г. Ульяновск, ул. Хваткова, дом 28В
               </p>
             </div>
 
             <div className="text-left">
-              <span className="block text-sm text-[#001826]/50 sm:text-base lg:text-[18px] lg:leading-[1.7]">
+              <span className="block text-main text-[#001826]/50">
                 Электронная почта
               </span>
-              <p className="mt-1 font-sans text-base font-normal text-[#001826] sm:text-lg lg:text-[18px] lg:leading-[1.7]">
+              <p className="mt-1 text-main font-normal text-[#001826]">
                 <a
                   href="mailto:otrada.ul73@mail.ru"
                   className="text-[#001826] underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
@@ -1036,10 +1036,10 @@ function ContactsSection() {
             </div>
 
             <div className="text-left">
-              <span className="block text-sm text-[#001826]/50 sm:text-base lg:text-[18px] lg:leading-[1.7]">
+              <span className="block text-main text-[#001826]/50">
                 Номер отдела продаж
               </span>
-              <div className="mt-1 flex flex-col items-start gap-1 font-sans text-base font-normal text-[#001826] sm:text-lg lg:text-[18px] lg:leading-[1.7]">
+              <div className="mt-1 flex flex-col items-start gap-1 text-main font-normal text-[#001826]">
                 <a
                   href="tel:+78422748000"
                   className="underline decoration-1 underline-offset-2 transition-opacity hover:opacity-80"
@@ -1139,12 +1139,12 @@ function QuestionsSection() {
               <h3 className="heading-3 mt-4 text-[#001826]">
                 Спасибо, {submittedData?.name || "заявка принята"}!
               </h3>
-              <p className="mt-2 text-base leading-[1.5] lg:text-[18px] lg:leading-[1.7] text-slate-600">
+              <p className="mt-2 text-main text-slate-600">
                 Мы свяжемся с вами по номеру{" "}
                 <span className="font-semibold text-[#001826]">{submittedData?.phone}</span> в
                 ближайшее время.
               </p>
-              <div className="mt-4 rounded-[8px] bg-slate-50 p-3.5 border border-slate-100 w-full text-sm">
+              <div className="mt-4 rounded-[8px] bg-slate-50 p-3.5 border border-slate-100 w-full text-small">
                 <p className="text-slate-500">
                   <span className="font-medium text-slate-700">Имя:</span> {submittedData?.name}
                 </p>
@@ -1161,7 +1161,7 @@ function QuestionsSection() {
                   setName("");
                   setPhone("");
                 }}
-                className="mt-5 text-sm font-medium text-[#023352] underline underline-offset-4 hover:opacity-80"
+                className="mt-5 text-small font-medium text-[#023352] underline underline-offset-4 hover:opacity-80"
               >
                 Отправить ещё одну заявку
               </button>
@@ -1198,13 +1198,13 @@ function QuestionsSection() {
               </div>
 
               {error ? (
-                <p className="mt-2.5 text-sm text-destructive text-left" role="alert">
+                <p className="mt-2.5 text-small text-destructive text-left" role="alert">
                   {error}
                 </p>
               ) : null}
 
               <button
-                className="cta-solid mt-4 sm:mt-5 flex w-full items-center justify-center gap-2 rounded-[4px] py-3 text-base lg:text-[18px] lg:leading-[1.7] font-medium disabled:opacity-70 disabled:cursor-not-allowed"
+                className="cta-solid mt-4 sm:mt-5 flex w-full items-center justify-center gap-2 rounded-[4px] py-3 text-main font-medium disabled:opacity-70 disabled:cursor-not-allowed"
                 type="submit"
                 disabled={loading}
               >
@@ -1217,7 +1217,7 @@ function QuestionsSection() {
                   "Отправить"
                 )}
               </button>
-              <p className="mt-3 text-center text-xs leading-[1.5] text-slate-500">
+              <p className="mt-3 text-center text-small text-slate-500">
                 Нажимая кнопку, вы соглашаетесь на обработку персональных данных
               </p>
             </form>
@@ -1237,10 +1237,10 @@ function FooterSection() {
       <div className="mx-auto w-full max-w-layouts px-3 sm:px-8 lg:px-12">
         {/* Навигация — На сайте */}
         <div className="flex flex-col items-start text-left">
-          <span className="font-sans text-sm font-normal text-white/50 sm:text-base lg:text-[18px] lg:leading-[1.7]">
+          <span className="text-main font-normal text-white/50">
             На сайте
           </span>
-          <nav className="mt-4 flex flex-col gap-2.5 font-sans text-base lg:text-[18px] lg:leading-[1.7] text-white sm:gap-3">
+          <nav className="mt-4 flex flex-col gap-2.5 text-main text-white sm:gap-3">
             <a href="#about" className="transition-colors hover:text-white/80">
               О проекте
             </a>

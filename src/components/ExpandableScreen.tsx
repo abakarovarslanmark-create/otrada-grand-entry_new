@@ -105,47 +105,26 @@ export function ExpandableScreenTrigger({
   children,
   className = "",
 }: ExpandableScreenTriggerProps) {
-  const { isExpanded, expand, layoutId, triggerRadius } = useExpandableScreen();
+  const { expand } = useExpandableScreen();
 
   if (isValidElement(children)) {
     const childElement = children as ReactElement<{
       onClick?: (e: React.MouseEvent) => void;
       className?: string;
     }>;
-    return (
-      <AnimatePresence initial={false}>
-        {!isExpanded && (
-          <motion.div
-            layoutId={layoutId}
-            style={{ borderRadius: triggerRadius }}
-            className={cn("inline-block relative", className)}
-          >
-            {cloneElement(childElement, {
-              onClick: (e: React.MouseEvent) => {
-                childElement.props.onClick?.(e);
-                expand();
-              },
-              className: cn("cursor-pointer", childElement.props.className),
-            })}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    );
+    return cloneElement(childElement, {
+      onClick: (e: React.MouseEvent) => {
+        childElement.props.onClick?.(e);
+        expand();
+      },
+      className: cn("cursor-pointer", className, childElement.props.className),
+    });
   }
 
   return (
-    <AnimatePresence initial={false}>
-      {!isExpanded && (
-        <motion.div
-          layoutId={layoutId}
-          style={{ borderRadius: triggerRadius }}
-          onClick={expand}
-          className={cn("inline-block cursor-pointer relative", className)}
-        >
-          {children}
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div onClick={expand} className={cn("inline-block cursor-pointer relative", className)}>
+      {children}
+    </div>
   );
 }
 
@@ -163,8 +142,7 @@ export function ExpandableScreenContent({
   showCloseButton = true,
   closeButtonClassName = "",
 }: ExpandableScreenContentProps) {
-  const { isExpanded, collapse, layoutId, contentRadius, animationDuration } =
-    useExpandableScreen();
+  const { isExpanded, collapse, contentRadius, animationDuration } = useExpandableScreen();
 
   useEffect(() => {
     if (!isExpanded) return;
@@ -178,7 +156,7 @@ export function ExpandableScreenContent({
   if (typeof document === "undefined") return null;
 
   return createPortal(
-    <AnimatePresence initial={false}>
+    <AnimatePresence>
       {isExpanded && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
           {/* Dimmed backdrop */}
@@ -191,32 +169,26 @@ export function ExpandableScreenContent({
             className="absolute inset-0 bg-ink/45 backdrop-blur-xs cursor-pointer"
             aria-hidden="true"
           />
-          {/* Morphing Modal Dialog */}
+          {/* Modal Dialog */}
           <motion.div
-            layoutId={layoutId}
-            transition={{ duration: animationDuration }}
+            role="dialog"
+            aria-modal="true"
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ duration: animationDuration, ease: [0.16, 1, 0.3, 1] }}
             style={{
               borderRadius: contentRadius,
             }}
-            layout
-            className={cn("relative z-10 flex transform-gpu will-change-transform", className)}
+            className={cn("relative z-10 flex", className)}
           >
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ delay: animationDuration * 0.4, duration: 0.2 }}
-              className="relative z-20 flex w-full flex-col items-center justify-center"
-            >
+            <div className="relative z-20 flex w-full flex-col items-center justify-center">
               {children}
-            </motion.div>
+            </div>
 
             {showCloseButton && (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: animationDuration * 0.5, duration: 0.15 }}
+              <button
+                type="button"
                 onClick={collapse}
                 className={cn(
                   "absolute top-3.5 right-3.5 z-30 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-colors",
@@ -226,7 +198,7 @@ export function ExpandableScreenContent({
                 aria-label="Закрыть"
               >
                 <X className="h-5 w-5" />
-              </motion.button>
+              </button>
             )}
           </motion.div>
         </div>
