@@ -19,17 +19,11 @@ The hero image dominates, establishing a sense of scale and the environment. The
 ## Colors
 
 | Hex | Role (heuristic) |
-
-|---|---|
-
+| --- | --- |
 | `#3cace6` | support |
-
 | `#04141c` | surface (raised) |
-
 | `#7dc5f4` | accent |
-
 | `#578699` | support |
-
 | `#b4b5b8` | support |
 
 Color words: _cool_, _muted_, _monochrome_
@@ -39,19 +33,12 @@ Color words: _cool_, _muted_, _monochrome_
 Detected typefaces: **WebRecklessNeue**, **WebHaffer**
 
 | Role | Family | Size | Weight | Line-height | Letter-spacing |
-
 |---|---|---|---|---|---|
-
-| h1 | Oranienbaum | 77px | 400 | 1 | -1.5px |
-
-| h2 | Oranienbaum| 74px | 400 | 1.15 | 0 |
-
-| h3 | Oranienbaum| 32px | 400 | 1.25 | 0 |
-
+| h1 | Oranienbaum | 90px | 400 | 1.15 | 0 |
+| h2 | Oranienbaum| 70px | 400 | 1.15 | 0 |
+| h3 | Oranienbaum| 40px | 400 | 1.25 | 0 |
 | body | Geist| 18px | 400 | 1.45 | 0 |
-
 | caption | Geist| 18px | 700 | 1.45 | 0 |
-
 | button | Geist| 18px | 400 | 1 | 0 |
 
 ## Spacing scale

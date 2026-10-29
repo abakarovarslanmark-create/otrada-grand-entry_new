@@ -314,7 +314,8 @@ function Index() {
                 id="hero-title"
                 className="hero-enter hero-delay-1 hero-text-shadow whitespace-nowrap font-display text-[clamp(2rem,7vw,6rem)] leading-[0.98] text-foreground"
               >
-                Жизнь в центре без компромиссов
+                Жизнь в центре <br />
+                без компромиссов
               </h1>
               <p className="hero-enter hero-delay-2 hero-text-shadow mt-6 max-w-none text-[clamp(1rem,2.8vw,1.75rem)] leading-relaxed text-foreground/90 sm:whitespace-nowrap">
                 Ваша новая квартира в самом центре Ульяновска
